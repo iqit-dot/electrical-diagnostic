@@ -3,64 +3,88 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kubota Machinery Electrical Suite (Private)</title>
+  <title>KUBOTA Machinery Electrical Master Suite (Pro 2026)</title>
+  <!-- Tailwind CSS & FontAwesome CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Prompt', 'sans-serif'] },
+          colors: {
+            kubota: { DEFAULT: '#F37021', dark: '#C85108', light: '#FFA666', bg: '#FFF8F3' }
+          }
+        }
+      }
+    }
+  </script>
   <style>
     body { font-family: 'Prompt', sans-serif; }
+    .wire-line { transition: all 0.25s ease-in-out; }
+    @media print {
+      header, footer, nav, .no-print { display: none !important; }
+      body { background: white; color: black; }
+      .tab-pane { display: block !important; }
+      #tab-knowledge, #tab-cluster, #tab-lab, #tab-exam { display: none !important; }
+      #tab-checklist { display: block !important; }
+    }
   </style>
 </head>
 <body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col">
 
-  <!-- Password Overlay Modal -->
+  <!-- 0. PASSWORD OVERLAY MODAL (PIN: 14115) -->
   <div id="auth-lock" class="fixed inset-0 bg-slate-900 z-[999] flex items-center justify-center p-4">
-    <div class="bg-white p-6 rounded-2xl shadow-2xl max-w-sm w-full text-center border-t-4 border-[#F37021]">
-      <div class="w-16 h-16 bg-orange-100 text-[#F37021] rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+    <div class="bg-white p-7 rounded-2xl shadow-2xl max-w-sm w-full text-center border-t-8 border-kubota">
+      <div class="w-16 h-16 bg-orange-100 text-kubota rounded-full flex items-center justify-center mx-auto mb-4 text-2xl shadow-inner">
         <i class="fa-solid fa-lock"></i>
       </div>
-      <h2 class="text-xl font-bold text-gray-900 mb-1">ระบบเฉพาะบุคคล</h2>
-      <p class="text-xs text-gray-500 mb-4">กรุณากรอกรหัสผ่านเพื่อเข้าใช้งาน</p>
+      <h2 class="text-xl font-bold text-gray-900 mb-1">ระบบเฉพาะบุคคล (CSD-2026)</h2>
+      <p class="text-xs text-gray-500 mb-4">Kubota Electrical Suite - กรุณากรอกรหัสผ่านเพื่อเข้าใช้งาน</p>
       
-      <input type="password" id="pin-input" placeholder="ใส่รหัสผ่าน..." class="w-full text-center tracking-widest text-lg font-bold border-2 border-gray-300 rounded-xl px-4 py-2 mb-3 outline-none focus:border-[#F37021]" onkeypress="if(event.key==='Enter') checkAuth()">
+      <input type="password" id="pin-input" placeholder="รหัสผ่าน..." class="w-full text-center tracking-widest text-xl font-bold border-2 border-gray-300 rounded-xl px-4 py-2 mb-3 outline-none focus:border-kubota focus:ring-2 focus:ring-orange-200" onkeypress="if(event.key==='Enter') checkAuth()">
       
-      <button onclick="checkAuth()" class="w-full bg-[#F37021] hover:bg-orange-600 text-white font-bold py-2 rounded-xl transition shadow-md">
+      <button onclick="checkAuth()" class="w-full bg-kubota hover:bg-kubota-dark text-white font-bold py-2.5 rounded-xl transition shadow-md">
         เข้าสู่ระบบ
       </button>
-      <div id="auth-error" class="text-xs text-red-500 font-semibold mt-2 hidden">รหัสผ่านไม่ถูกต้อง</div>
+      <div id="auth-error" class="text-xs text-red-500 font-semibold mt-2 hidden">รหัสผ่านไม่ถูกต้อง (กรุณาลองใหม่อีกครั้ง)</div>
     </div>
   </div>
 
   <!-- Header & Navigation -->
-  <header class="bg-[#F37021] text-white shadow-md sticky top-0 z-50">
+  <header class="bg-kubota text-white shadow-md sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
       <div class="flex items-center space-x-3">
-        <div class="bg-white text-[#F37021] p-2 rounded-lg font-bold text-xl shadow">
+        <div class="bg-white text-kubota p-2.5 rounded-xl font-bold text-xl shadow">
           <i class="fa-solid fa-bolt"></i>
         </div>
         <div>
-          <h1 class="font-bold text-lg md:text-xl leading-tight">KUBOTA Electrical Suite (Personal)</h1>
-          <p class="text-xs text-orange-100">ศูนย์การเรียนรู้และการวินิจฉัยระบบไฟฟ้าเครื่องจักรกลการเกษตร</p>
+          <h1 class="font-bold text-lg md:text-xl leading-tight">KUBOTA Electrical Training & Diagnostic Suite</h1>
+          <p class="text-xs text-orange-100">แทรกเตอร์ (L/M) • รถเกี่ยว (DC) • รถขุด (KX/U) • รถดำนา (KA8)</p>
         </div>
       </div>
       <nav class="flex flex-wrap gap-1 md:gap-2">
-        <button onclick="switchTab('knowledge')" id="btn-knowledge" class="nav-btn px-3 py-1.5 rounded-md text-sm font-medium bg-orange-700 shadow-inner text-white">
+        <button onclick="switchTab('knowledge')" id="btn-knowledge" class="nav-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-kubota-dark shadow-inner text-white">
           <i class="fa-solid fa-book-open mr-1"></i> สเปกและคู่มือ
         </button>
-        <button onclick="switchTab('cluster')" id="btn-cluster" class="nav-btn px-3 py-1.5 rounded-md text-sm font-medium hover:bg-orange-600 text-orange-100">
-          <i class="fa-solid fa-gauge mr-1"></i> โหมดหน้าปัด (รถขุด/เกี่ยว/ดำ)
+        <button onclick="switchTab('cluster')" id="btn-cluster" class="nav-btn px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-orange-600 text-orange-100">
+          <i class="fa-solid fa-gauge mr-1"></i> โหมดหน้าปัด
         </button>
-        <button onclick="switchTab('lab')" id="btn-lab" class="nav-btn px-3 py-1.5 rounded-md text-sm font-medium hover:bg-orange-600 text-orange-100">
+        <button onclick="switchTab('lab')" id="btn-lab" class="nav-btn px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-orange-600 text-orange-100">
           <i class="fa-solid fa-microchip mr-1"></i> จำลองวงจรไฟ (SumTotal)
         </button>
-        <button onclick="switchTab('exam')" id="btn-exam" class="nav-btn px-3 py-1.5 rounded-md text-sm font-medium hover:bg-orange-600 text-orange-100">
-          <i class="fa-solid fa-spell-check mr-1"></i> สอบรหัสสี & สัญลักษณ์
+        <button onclick="switchTab('exam')" id="btn-exam" class="nav-btn px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-orange-600 text-orange-100">
+          <i class="fa-solid fa-graduation-cap mr-1"></i> แบบทดสอบ (3 หมวด)
         </button>
-        <button onclick="switchTab('checklist')" id="btn-checklist" class="nav-btn px-3 py-1.5 rounded-md text-sm font-medium hover:bg-orange-600 text-orange-100">
+        <button onclick="switchTab('checklist')" id="btn-checklist" class="nav-btn px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-orange-600 text-orange-100">
           <i class="fa-solid fa-clipboard-check mr-1"></i> ใบงานตรวจเช็ก 6 รุ่น
         </button>
-        <button onclick="logout()" class="px-3 py-1.5 rounded-md text-xs font-medium bg-slate-800 hover:bg-slate-900 text-white ml-2">
-          <i class="fa-solid fa-right-from-bracket mr-1"></i> ออกจากระบบ
+        <button onclick="logout()" class="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-900 text-white ml-2">
+          <i class="fa-solid fa-power-off"></i>
         </button>
       </nav>
     </div>
@@ -71,58 +95,72 @@
 
     <!-- 1. KNOWLEDGE & SPECS TAB -->
     <section id="tab-knowledge" class="tab-pane block space-y-6">
+      <!-- Wire Search -->
       <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
-        <h2 class="text-xl font-bold text-gray-900 mb-2 flex items-center">
-          <i class="fa-solid fa-magnifying-glass text-[#F37021] mr-2"></i> ตัวถอดรหัสสีสายไฟมาตรฐาน KUBOTA
+        <h2 class="text-lg font-bold text-gray-900 mb-1 flex items-center">
+          <i class="fa-solid fa-magnifying-glass text-kubota mr-2"></i> ค้นหารหัสสีสายไฟมาตรฐาน KUBOTA (Wire Color Decoder)
         </h2>
-        <p class="text-sm text-gray-600 mb-4">พิมพ์ตัวย่อสีสายไฟ (เช่น <span class="bg-gray-100 px-1 font-mono rounded">B/R</span>, <span class="bg-gray-100 px-1 font-mono rounded">Or/W</span>, <span class="bg-gray-100 px-1 font-mono rounded">Lg</span>) เพื่อค้นหาความหมาย</p>
-        <div class="flex gap-2 mb-4 max-w-md">
-          <input type="text" id="wire-input" placeholder="พิมพ์ตัวย่อสี เช่น W, R, B, Or/W..." class="border rounded-lg px-3 py-2 text-sm w-full focus:ring-2 focus:ring-[#F37021] outline-none uppercase font-semibold">
-          <button onclick="searchWireColor()" class="bg-[#F37021] hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium">ค้นหา</button>
+        <p class="text-xs text-gray-500 mb-3">พิมพ์ตัวย่อสีสายไฟ เช่น <span class="bg-gray-100 px-1 font-mono rounded">B/R</span>, <span class="bg-gray-100 px-1 font-mono rounded">Or/W</span>, <span class="bg-gray-100 px-1 font-mono rounded">Y/G</span>, <span class="bg-gray-100 px-1 font-mono rounded">Sb</span></p>
+        <div class="flex gap-2 max-w-md">
+          <input type="text" id="wire-input" placeholder="พิมพ์รหัสสี เช่น W, R, B, OR/W..." class="border rounded-lg px-3 py-2 text-sm w-full focus:ring-2 focus:ring-kubota outline-none uppercase font-semibold">
+          <button onclick="searchWireColor()" class="bg-kubota hover:bg-kubota-dark text-white px-5 py-2 rounded-lg text-sm font-medium shadow">ค้นหา</button>
         </div>
-        <div id="wire-result" class="p-3 bg-orange-50 border border-orange-200 rounded-lg text-sm hidden flex items-center gap-3">
-          <div id="wire-sample" class="w-8 h-8 rounded border shadow-sm"></div>
+        <div id="wire-result" class="p-3 bg-orange-50 border border-orange-200 rounded-lg text-sm mt-3 hidden flex items-center gap-3">
+          <div id="wire-sample" class="w-9 h-9 rounded-md border shadow-sm flex-shrink-0"></div>
           <div>
-            <div id="wire-name" class="font-bold text-gray-900"></div>
+            <div id="wire-name" class="font-bold text-gray-900 text-sm"></div>
             <div id="wire-desc" class="text-xs text-gray-600"></div>
           </div>
         </div>
       </div>
 
+      <!-- Specs Cards Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Alternator Spec Card -->
+        <!-- Alternator WSM -->
         <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
-          <h3 class="font-bold text-lg text-gray-900 border-b pb-2 mb-3 text-[#F37021]"><i class="fa-solid fa-car-battery mr-1"></i> ไดชาร์จ (Alternator WSM)</h3>
-          <ul class="text-sm space-y-2 text-gray-700">
+          <h3 class="font-bold text-base text-gray-900 border-b pb-2 mb-3 text-kubota flex items-center justify-between">
+            <span><i class="fa-solid fa-car-battery mr-1.5"></i> ไดชาร์จ (Alternator WSM)</span>
+            <span class="text-[10px] bg-orange-100 px-2 py-0.5 rounded text-kubota font-semibold">WSM 4.6</span>
+          </h3>
+          <ul class="text-xs space-y-2 text-gray-700">
             <li><strong>ขั้ว B (กุญแจ OFF):</strong> แรงดันใกล้เคียงแบตเตอรี่ (12.0 - 12.6V)</li>
-            <li><strong>ขั้ว IG (กุญแจ ON):</strong> แรงดันใกล้เคียงแบตเตอรี่ (จ่ายไฟเข้า IC)</li>
-            <li><strong>No-load Test (รอบเดินเบา):</strong> ต้องได้มากกว่า <strong>14.0 V</strong> (หากต่ำกว่าให้ตรวจ IC Regulator)</li>
-            <li><strong>ขดลวดโรเตอร์:</strong> วัดความต้านทานแหวนแยก ≥ 2.9 Ω (ห้ามลงกราวด์)</li>
-            <li><strong>การวัดเรคติไฟเออร์:</strong> <em>ห้ามใช้ดิจิตอลมิเตอร์อัตโนมัติ</em> ให้ใช้มิเตอร์อนาล็อกย่าน R x 1 เท่านั้น</li>
+            <li><strong>ขั้ว IG (กุญแจ ON):</strong> แรงดันใกล้เคียงแบตเตอรี่ (จ่ายไฟเข้า IC เรกูเลเตอร์)</li>
+            <li><strong>No-load Test (รอบเดินเบา):</strong> ต้องได้มากกว่า <strong>14.0 V</strong> (หากต่ำกว่าให้ตรวจ IC)</li>
+            <li><strong>ขดลวดโรเตอร์:</strong> วัดความต้านทานแหวนแยก <strong>≥ 2.9 Ω</strong> (ต้องไม่ลงกราวด์)</li>
+            <li><strong>ขดลวดสเตเตอร์:</strong> ต่อถึงกันทั้ง 4 เส้น และห้ามลงกราวด์</li>
+            <li class="bg-red-50 p-2 rounded text-red-700 font-semibold"><strong>ข้อห้าม:</strong> ห้ามใช้ดิจิตอลมิเตอร์อัตโนมัติวัดเรคติไฟเออร์ ให้ใช้มิเตอร์อนาล็อกย่าน R x 1 เท่านั้น</li>
           </ul>
         </div>
 
-        <!-- Starter Motor Card -->
+        <!-- Starter Motor WSM -->
         <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
-          <h3 class="font-bold text-lg text-gray-900 border-b pb-2 mb-3 text-[#F37021]"><i class="fa-solid fa-gears mr-1"></i> มอเตอร์สตาร์ท (Starter)</h3>
-          <ul class="text-sm space-y-2 text-gray-700">
+          <h3 class="font-bold text-base text-gray-900 border-b pb-2 mb-3 text-kubota flex items-center justify-between">
+            <span><i class="fa-solid fa-gears mr-1.5"></i> มอเตอร์สตาร์ท (Starter Motor)</span>
+            <span class="text-[10px] bg-orange-100 px-2 py-0.5 rounded text-kubota font-semibold">WSM Starting</span>
+          </h3>
+          <ul class="text-xs space-y-2 text-gray-700">
             <li><strong>ขดลวดดึง (Pull-in / P):</strong> วัดขั้ว 50 กับขั้ว C = <strong>0.1 – 0.5 Ω</strong></li>
             <li><strong>ขดลวดยึด (Hold-in / H):</strong> วัดขั้ว 50 กับโครง = <strong>14 – 18 Ω</strong></li>
-            <li><strong>แปรงถ่าน (WSM 7508/8808):</strong> มาตรฐาน 18.0 มม. (ขีดจำกัดสึกหรอ 11.0 มม.)</li>
-            <li><strong>คอมมิวเตเตอร์:</strong> ความบิดเบี้ยวไม่เกิน 0.05 มม.</li>
-            <li><strong>ข้อควรระวัง:</strong> การทดสอบต่อตรงภายนอกไม่ควรเกิน <strong>3–5 วินาที</strong></li>
+            <li><strong>ความยาวแปรงถ่าน (7508/9808):</strong> มาตรฐาน 18.0 มม. (ขีดจำกัดต่ำสุด <strong>11.0 มม.</strong>)</li>
+            <li><strong>ความกว้างคอมมิวเตเตอร์:</strong> 31.4 – 32.0 มม. (ความบิดเบี้ยวไม่เกิน 0.05 มม.)</li>
+            <li><strong>ทดสอบตัวเปล่า (No Load):</strong> ขั้ว B+ และขั้ว 50 ต่อไฟ 12V กินกระแส &lt; 100A (ขนาด 2.0 kW)</li>
+            <li class="bg-amber-50 p-2 rounded text-amber-800 font-semibold"><strong>ข้อควรระวัง:</strong> การทดสอบต่อตรงภายนอกห้ามเกิน <strong>3–5 วินาที</strong> เพื่อป้องกันขดลวดไหม้</li>
           </ul>
         </div>
 
-        <!-- Sensors & Actuators Card -->
+        <!-- Sensors & Machine Actuators -->
         <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
-          <h3 class="font-bold text-lg text-gray-900 border-b pb-2 mb-3 text-[#F37021]"><i class="fa-solid fa-wave-square mr-1"></i> เซนเซอร์ & อุปกรณ์ควบคุม</h3>
-          <ul class="text-sm space-y-2 text-gray-700">
-            <li><strong>หัวเผา (Glow Plug):</strong> ความต้านทานมาตรฐานประมาณ <strong>0.95 Ω</strong></li>
-            <li><strong>เซนเซอร์ความร้อนน้ำ:</strong> 50°C ≈ 0.81 kΩ, 80°C ≈ 0.32 kΩ, 100°C ≈ 0.18 kΩ</li>
-            <li><strong>มอเตอร์เร่งรอบ AI (รถขุด):</strong> วัดขั้ว 1–2 = <strong>0.8 – 1.4 Ω</strong></li>
-            <li><strong>คอนโซลคันเร่ง AI:</strong> เต่า (เบาสุด) > 600 Ω, กระต่าย (เร่งสุด) < 400 Ω</li>
-            <li><strong>สวิตช์แรงดันน้ำมันเครื่อง:</strong> ดับเครื่อง 0 Ω / ติดเครื่องหรือแรงดัน > 49 kPa จะตัดวงจร (Open)</li>
+          <h3 class="font-bold text-base text-gray-900 border-b pb-2 mb-3 text-kubota flex items-center justify-between">
+            <span><i class="fa-solid fa-wave-square mr-1.5"></i> เซนเซอร์และโซลินอยด์เฉพาะรุ่น</span>
+            <span class="text-[10px] bg-orange-100 px-2 py-0.5 rounded text-kubota font-semibold">KX / DC / KA8</span>
+          </h3>
+          <ul class="text-xs space-y-2 text-gray-700">
+            <li><strong>หัวเผา (Glow Plug):</strong> ความต้านทานมาตรฐานประมาณ <strong>0.95 Ω</strong> (0 Ω = ลัดวงจร)</li>
+            <li><strong>เซนเซอร์อุณหภูมิน้ำ:</strong> 50°C ≈ 0.81 kΩ, 80°C ≈ 0.32 kΩ, 100°C ≈ 0.18 kΩ</li>
+            <li><strong>มอเตอร์เร่งรอบ AI (รถขุด):</strong> ขั้ว 1–2 = <strong>0.8 – 1.4 Ω</strong> (สลับขั้วต้องกลับทิศ)</li>
+            <li><strong>คอนโซลเร่งรอบ AI:</strong> เต่า (เบาสุด) &gt; 600 Ω, กระต่าย (เร่งสุด) &lt; 400 Ω</li>
+            <li><strong>เซนเซอร์ลิ้งก์รถดำนา KA8 (Link Sensor):</strong> แรงดันปรับตั้ง <strong>1.56 – 2.19 V</strong></li>
+            <li><strong>เซนเซอร์ระนาบมอนโร (Combine/KA8):</strong> ขา 1 (+5V), ขา 3 (0V), ขา 2 สัญญาณกลาง <strong>2.5 V</strong></li>
           </ul>
         </div>
       </div>
@@ -131,105 +169,173 @@
     <!-- 2. CLUSTER EMULATOR TAB -->
     <section id="tab-cluster" class="tab-pane hidden space-y-6">
       <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
-        <h2 class="text-xl font-bold text-gray-900 mb-2 flex items-center">
-          <i class="fa-solid fa-gamepad text-[#F37021] mr-2"></i> จำลองการเข้าโหมดบริการบนแผงหน้าปัด
+        <h2 class="text-lg font-bold text-gray-900 mb-1 flex items-center">
+          <i class="fa-solid fa-gamepad text-kubota mr-2"></i> จำลองการใช้งานแผงหน้าปัดและโหมดบริการ (Cluster Service Mode Simulator)
         </h2>
+        <p class="text-xs text-gray-500 mb-4">เลือกรุ่นเครื่องจักร จากนั้นทดลองกดปุ่มตามขั้นตอนคู่มือเพื่อเข้าสู่โหมดตรวจเช็กโค้ดและปรับตั้งค่า</p>
+
         <div class="flex flex-wrap gap-2 mb-4">
-          <button onclick="selectCluster('excavator5')" class="cl-btn px-3 py-1.5 rounded-lg text-sm bg-[#F37021] text-white font-medium">รถขุดจอสี 5 ปุ่ม (KX033/U36/U55)</button>
-          <button onclick="selectCluster('excavator3')" class="cl-btn px-3 py-1.5 rounded-lg text-sm bg-gray-100 text-gray-700 font-medium hover:bg-gray-200">รถขุด I.C.S. 3 ปุ่ม (KX91-3/U15)</button>
-          <button onclick="selectCluster('combine')" class="cl-btn px-3 py-1.5 rounded-lg text-sm bg-gray-100 text-gray-700 font-medium hover:bg-gray-200">รถเกี่ยวนวดข้าว (DC-70G/93G/105X)</button>
-          <button onclick="selectCluster('transplanter')" class="cl-btn px-3 py-1.5 rounded-lg text-sm bg-gray-100 text-gray-700 font-medium hover:bg-gray-200">รถดำนา (KA8 / KA8-GS)</button>
+          <button onclick="selectCluster('excavator5')" id="btn-cl-exc5" class="cl-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-kubota text-white">รถขุดจอสี 5 ปุ่ม (KX033/U36/U55)</button>
+          <button onclick="selectCluster('excavator3')" id="btn-cl-exc3" class="cl-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200">รถขุด I.C.S. 3 ปุ่ม (KX91-3/U15)</button>
+          <button onclick="selectCluster('combine')" id="btn-cl-com" class="cl-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200">รถเกี่ยวนวดข้าว (DC-70G/93G/105X)</button>
+          <button onclick="selectCluster('transplanter')" id="btn-cl-tra" class="cl-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200">รถดำนา (KA8 / KA8-GS)</button>
         </div>
 
+        <!-- Emulator Box -->
         <div class="bg-slate-900 p-6 rounded-2xl border-4 border-slate-700 max-w-2xl mx-auto text-white shadow-2xl">
           <div class="flex justify-between items-center border-b border-slate-700 pb-3 mb-4">
-            <span id="cluster-title" class="font-bold text-orange-400">รถขุดจอสี 5 ปุ่ม (KX033 / U36 / U55)</span>
-            <span id="cluster-key-status" class="px-2 py-0.5 rounded text-xs bg-red-900 text-red-200">Key: OFF</span>
+            <span id="cluster-title" class="font-bold text-orange-400 text-sm">รถขุดจอสี 5 ปุ่ม (KX033 / U36 / U55)</span>
+            <span id="cluster-key-status" class="px-2 py-0.5 rounded text-xs bg-red-900 text-red-200 font-semibold">กุญแจ: OFF</span>
           </div>
+
+          <!-- Virtual LCD Screen -->
           <div id="virtual-screen" class="bg-emerald-950 p-6 rounded-xl border border-emerald-800 text-center min-h-[140px] flex flex-col justify-center items-center font-mono">
-            <div id="screen-line1" class="text-2xl text-emerald-400 font-bold mb-1">--- SCREEN OFF ---</div>
-            <div id="screen-line2" class="text-sm text-emerald-600">บิดกุญแจ ON เพื่อเริ่มทำงาน</div>
+            <div id="screen-line1" class="text-xl text-emerald-400 font-bold mb-1">--- จอดับ (KEY OFF) ---</div>
+            <div id="screen-line2" class="text-xs text-emerald-600">บิดสวิตช์กุญแจไปที่ตำแหน่ง ON เพื่อเริ่มการทำงาน</div>
           </div>
+
+          <!-- Controls -->
           <div class="mt-6 pt-4 border-t border-slate-700">
-            <div class="flex justify-center mb-3">
-              <button onclick="toggleVirtualKey()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-xs font-semibold">บิดกุญแจ: ON / OFF</button>
+            <div class="flex justify-center gap-2 mb-4">
+              <button onclick="toggleVirtualKey()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded-lg text-xs font-semibold flex items-center shadow">
+                <i class="fa-solid fa-key mr-1.5"></i> สลับสวิตช์กุญแจ ON / OFF
+              </button>
             </div>
+            <!-- Dynamic Push Buttons -->
             <div id="cluster-buttons" class="grid grid-cols-5 gap-2"></div>
           </div>
         </div>
-        <div id="cluster-guide" class="mt-4 p-4 bg-gray-50 rounded-lg text-sm border text-gray-700"></div>
+
+        <!-- Guide Panel -->
+        <div id="cluster-guide" class="mt-4 p-4 bg-orange-50/70 border border-orange-200 rounded-xl text-xs text-gray-700 leading-relaxed"></div>
       </div>
     </section>
 
-    <!-- 3. VOLTAGE LAB TAB -->
+    <!-- 3. VOLTAGE LAB TAB (SumTotal 5 Circuits) -->
     <section id="tab-lab" class="tab-pane hidden space-y-6">
       <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
-        <h2 class="text-xl font-bold text-gray-900 mb-2 flex items-center">
-          <i class="fa-solid fa-vial-circle-check text-[#F37021] mr-2"></i> ห้องจำลองวงจรไฟฟ้าและการวัดแรงดัน (SumTotal Quiz)
-        </h2>
-        <div class="flex flex-wrap gap-2 mb-4">
-          <button onclick="loadVoltageCircuit(1)" id="btn-vc1" class="vc-btn px-3 py-1.5 rounded-lg text-sm bg-[#F37021] text-white font-medium">วงจร 1: สวิตช์เดี่ยว (Q1-2)</button>
-          <button onclick="loadVoltageCircuit(4)" id="btn-vc4" class="vc-btn px-3 py-1.5 rounded-lg text-sm bg-gray-100 text-gray-700 font-medium hover:bg-gray-200">วงจร 2: มอเตอร์กลับทางหมุน H-Bridge (Q17-19)</button>
-        </div>
-        <div class="bg-slate-50 border border-slate-300 rounded-xl p-4 overflow-x-auto">
-          <div id="circuit-svg-container" class="min-w-[650px] flex justify-center"></div>
-        </div>
-        <div class="mt-4 flex justify-between items-center">
-          <div class="flex gap-2">
-            <button onclick="checkVoltageAnswers()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-lg text-sm font-semibold shadow">ตรวจคำตอบ (Submit)</button>
-            <button onclick="resetVoltageCircuit()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg text-sm font-medium">รีเซ็ตค่า</button>
+        <div class="flex flex-wrap justify-between items-center border-b pb-3 mb-4 gap-2">
+          <div>
+            <h2 class="text-lg font-bold text-gray-900 flex items-center">
+              <i class="fa-solid fa-vial-circle-check text-kubota mr-2"></i> ห้องทดสอบแรงดันไฟฟ้า SumTotal (Basic of Electricity Quiz)
+            </h2>
+            <p class="text-xs text-gray-500">จำลองการทดสอบวัดแรงดันไฟฟ้าเสมือนจริงของ Kubota LMS ครบทั้ง 5 รูปแบบวงจร</p>
           </div>
           <div id="voltage-feedback" class="text-sm font-bold"></div>
         </div>
-      </div>
-    </section>
 
-    <!-- 4. EXAM TAB -->
-    <section id="tab-exam" class="tab-pane hidden space-y-6">
-      <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
-        <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
-          <i class="fa-solid fa-graduation-cap text-[#F37021] mr-2"></i> แบบทดสอบภาคความรู้ระบบไฟฟ้า
-        </h2>
-        <div id="quiz-container" class="max-w-xl mx-auto p-4 bg-orange-50/50 rounded-xl border border-orange-100">
-          <div id="quiz-question-box" class="space-y-4"></div>
-          <div class="mt-4 flex justify-between items-center pt-3 border-t">
-            <span id="quiz-progress" class="text-xs text-gray-500 font-medium"></span>
-            <button onclick="submitExamAnswer()" id="btn-quiz-next" class="bg-[#F37021] hover:bg-orange-600 text-white px-4 py-1.5 rounded-lg text-xs font-semibold">ส่งคำตอบ</button>
+        <!-- Circuit Selector Tabs -->
+        <div class="flex flex-wrap gap-2 mb-4">
+          <button onclick="loadVoltageCircuit(1)" id="btn-vc1" class="vc-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-kubota text-white">1. สวิตช์เดี่ยว (Q1-2)</button>
+          <button onclick="loadVoltageCircuit(2)" id="btn-vc2" class="vc-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200">2. สวิตช์อนุกรม+กราวด์ (Q8-10)</button>
+          <button onclick="loadVoltageCircuit(3)" id="btn-vc3" class="vc-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200">3. วงจรขนาน 2 กิ่ง (Q11-12)</button>
+          <button onclick="loadVoltageCircuit(4)" id="btn-vc4" class="vc-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200">4. รีเลย์คุมไฟ (Q13-16)</button>
+          <button onclick="loadVoltageCircuit(5)" id="btn-vc5" class="vc-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200">5. รีเลย์กลับทางมอเตอร์ (Q17-19)</button>
+        </div>
+
+        <!-- Circuit Viewport -->
+        <div class="bg-slate-50 border border-slate-300 rounded-xl p-4 overflow-x-auto flex justify-center">
+          <div id="circuit-svg-container" class="min-w-[650px] flex justify-center"></div>
+        </div>
+
+        <!-- Submit Controls -->
+        <div class="mt-4 flex justify-between items-center">
+          <div class="flex gap-2">
+            <button onclick="checkVoltageAnswers()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-lg text-xs font-semibold shadow flex items-center">
+              <i class="fa-solid fa-check mr-1.5"></i> ตรวจคำตอบ (Submit)
+            </button>
+            <button onclick="resetVoltageCircuit()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg text-xs font-medium">
+              รีเซ็ตวงจร
+            </button>
+          </div>
+          <div class="text-xs text-gray-500 font-medium">
+            <span class="inline-block w-3 h-3 bg-red-600 rounded-full mr-1 align-middle"></span> เส้นสีแดง = มีแรงดัน 12V |
+            <span class="inline-block w-3 h-3 bg-blue-600 rounded-full mr-1 align-middle ml-2"></span> เส้นสีน้ำเงิน = 0V (กราวด์)
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 5. CHECKLIST TAB -->
-    <section id="tab-checklist" class="tab-pane hidden space-y-6">
+    <!-- 4. EXAM TAB (3 Categories) -->
+    <section id="tab-exam" class="tab-pane hidden space-y-6">
       <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
-        <div class="flex flex-wrap justify-between items-center border-b pb-3 mb-4 gap-3">
-          <h2 class="text-xl font-bold text-gray-900 flex items-center">
-            <i class="fa-solid fa-file-invoice text-[#F37021] mr-2"></i> ใบงานตรวจเช็กแรงดันไฟฟ้าระบบสตาร์ท
-          </h2>
-          <div class="flex gap-2">
-            <select id="model-select" onchange="renderChecklistTable()" class="border rounded-lg px-3 py-1.5 text-sm font-semibold text-[#F37021] border-orange-300 outline-none">
-              <option value="L5228">แทรกเตอร์ L5228</option>
-              <option value="U55">รถขุด U55</option>
-            </select>
-            <button onclick="window.print()" class="bg-slate-800 text-white px-3 py-1.5 rounded-lg text-sm hover:bg-slate-900">
-              <i class="fa-solid fa-print mr-1"></i> พิมพ์
+        <h2 class="text-lg font-bold text-gray-900 mb-1 flex items-center">
+          <i class="fa-solid fa-graduation-cap text-kubota mr-2"></i> ศูนย์ทดสอบภาคทฤษฎีระบบไฟฟ้าคูโบต้า (32 ข้อ)
+        </h2>
+        <p class="text-xs text-gray-500 mb-4">เลือกหมวดแบบทดสอบเพื่อฝึกฝนและประเมินความรู้ช่าง</p>
+
+        <!-- Category Selector -->
+        <div class="flex flex-wrap gap-2 border-b pb-3 mb-4">
+          <button onclick="switchExamCategory('wire')" id="btn-cat-wire" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-kubota text-white">หมวดที่ 1: รหัสสีสายไฟ (10 ข้อ)</button>
+          <button onclick="switchExamCategory('symbol')" id="btn-cat-symbol" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-gray-100 text-gray-700 hover:bg-gray-200">หมวดที่ 2: สัญลักษณ์วงจรไฟฟ้า (12 ข้อ)</button>
+          <button onclick="switchExamCategory('starter')" id="btn-cat-starter" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-gray-100 text-gray-700 hover:bg-gray-200">หมวดที่ 3: ระบบสตาร์ทและโซลินอยด์ (10 ข้อ)</button>
+        </div>
+
+        <!-- Quiz Container -->
+        <div class="max-w-xl mx-auto p-5 bg-orange-50/50 rounded-2xl border border-orange-100 shadow-sm">
+          <div id="quiz-box" class="space-y-4"></div>
+          <div class="mt-5 flex justify-between items-center pt-3 border-t border-orange-200">
+            <span id="quiz-progress" class="text-xs text-gray-500 font-semibold">ข้อที่ 1 / 10</span>
+            <button onclick="submitExamAnswer()" id="btn-quiz-next" class="bg-kubota hover:bg-kubota-dark text-white px-5 py-2 rounded-lg text-xs font-bold shadow">
+              ส่งคำตอบ <i class="fa-solid fa-arrow-right ml-1"></i>
             </button>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- 5. CHECKLIST TAB (Full 6 Models) -->
+    <section id="tab-checklist" class="tab-pane hidden space-y-6">
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+        <div class="flex flex-wrap justify-between items-center border-b pb-3 mb-4 gap-3">
+          <div>
+            <h2 class="text-lg font-bold text-gray-900 flex items-center">
+              <i class="fa-solid fa-file-invoice text-kubota mr-2"></i> ใบงานตรวจสอบแรงดันไฟฟ้าของวงจรไฟฟ้า (6 รุ่นมาตรฐาน)
+            </h2>
+            <p class="text-xs text-gray-500">ถอดตารางตรวจสอบจริงครบทุกแถวจากไฟล์ Excel (L5228, M9808, DC-70G PRO, KA8, KX033, U55)</p>
+          </div>
+          <div class="flex gap-2 no-print">
+            <select id="model-select" onchange="renderChecklistTable()" class="border-2 rounded-lg px-3 py-1.5 text-xs font-bold text-kubota border-orange-300 outline-none">
+              <option value="L5228">รถแทรกเตอร์ : L5228</option>
+              <option value="M9808">รถแทรกเตอร์ : M9808</option>
+              <option value="DC70">รถเกี่ยวนวดข้าว : DC-70G PRO</option>
+              <option value="KA8">รถดำนา : KA8 / KA8-GS</option>
+              <option value="KX033">รถขุดขนาดเล็ก : KX033</option>
+              <option value="U55">รถขุดขนาดเล็ก : U55 / U55-6</option>
+            </select>
+            <button onclick="window.print()" class="bg-slate-800 text-white px-3.5 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-900 shadow">
+              <i class="fa-solid fa-print mr-1"></i> พิมพ์ใบงาน
+            </button>
+          </div>
+        </div>
+
+        <!-- Student Form Info -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 bg-gray-50 p-3.5 rounded-xl text-xs border">
+          <div>
+            <label class="font-bold text-gray-700">ชื่อ - นามสกุล ช่างผู้ทดสอบ:</label>
+            <input type="text" placeholder="ระบุชื่อ-นามสกุล..." class="border rounded-lg px-3 py-1.5 w-full bg-white mt-1 text-xs outline-none focus:border-kubota">
+          </div>
+          <div>
+            <label class="font-bold text-gray-700">ร้านค้าผู้แทนจำหน่าย:</label>
+            <input type="text" placeholder="ระบุชื่อผู้แทนจำหน่ายคูโบต้า..." class="border rounded-lg px-3 py-1.5 w-full bg-white mt-1 text-xs outline-none focus:border-kubota">
+          </div>
+        </div>
+
+        <!-- Table -->
         <div class="overflow-x-auto">
-          <table class="w-full text-left text-sm border-collapse border border-gray-300">
-            <thead class="bg-orange-100 text-gray-800">
+          <table class="w-full text-left text-xs border-collapse border border-gray-300">
+            <thead class="bg-orange-100 text-gray-800 font-bold">
               <tr>
-                <th class="border border-gray-300 px-3 py-2 text-center w-12">#</th>
-                <th class="border border-gray-300 px-3 py-2">รายการตรวจสอบ</th>
-                <th class="border border-gray-300 px-3 py-2">จุดวัด / ขั้ว</th>
-                <th class="border border-gray-300 px-3 py-2 text-center w-28 bg-orange-200">OFF [V]</th>
-                <th class="border border-gray-300 px-3 py-2 text-center w-28 bg-orange-200">ON [V]</th>
-                <th class="border border-gray-300 px-3 py-2 text-center w-28 bg-orange-200">START [V]</th>
+                <th class="border border-gray-300 px-3 py-2.5 text-center w-12">ลำดับ</th>
+                <th class="border border-gray-300 px-3 py-2.5 w-48">รายการตรวจสอบ</th>
+                <th class="border border-gray-300 px-3 py-2.5">จุดตรวจวัด / ขั้วต่อ</th>
+                <th class="border border-gray-300 px-3 py-2.5 text-center w-28 bg-orange-200">OFF - ปิด [V]</th>
+                <th class="border border-gray-300 px-3 py-2.5 text-center w-28 bg-orange-200">ON - เปิด [V]</th>
+                <th class="border border-gray-300 px-3 py-2.5 text-center w-28 bg-orange-200">START [V]</th>
+                <th class="border border-gray-300 px-3 py-2.5 text-center w-24 no-print">สถานะ</th>
               </tr>
             </thead>
-            <tbody id="checklist-tbody" class="divide-y divide-gray-200"></tbody>
+            <tbody id="checklist-tbody" class="divide-y divide-gray-200 bg-white"></tbody>
           </table>
         </div>
       </div>
@@ -237,33 +343,35 @@
 
   </main>
 
-  <footer class="bg-white border-t py-4 mt-auto">
+  <!-- Footer -->
+  <footer class="bg-white border-t py-3.5 mt-auto no-print">
     <div class="max-w-7xl mx-auto px-4 text-center text-xs text-gray-500">
-      Kubota Machinery Electrical Diagnostic Suite (Private Access)
+      KUBOTA Machinery Electrical Training & Diagnostic Suite (Personal Private Access • PIN Protected)
     </div>
   </footer>
 
+  <!-- Application Logic JavaScript -->
   <script>
-    // ===== PASSWORD SECURITY LOGIC =====
-    const SECRET_PIN = "14115"; // รหัสผ่านส่วนตัวของคุณ
+    // ===== 0. AUTHENTICATION LOGIC (PIN: 14115) =====
+    const SECRET_PIN = "14115";
 
     function checkAuth() {
       const input = document.getElementById("pin-input").value;
       const err = document.getElementById("auth-error");
       if (input === SECRET_PIN) {
         document.getElementById("auth-lock").classList.add("hidden");
-        sessionStorage.setItem("kubota_auth", "true");
+        sessionStorage.setItem("kubota_auth_pro", "true");
       } else {
         err.classList.remove("hidden");
       }
     }
 
     function logout() {
-      sessionStorage.removeItem("kubota_auth");
+      sessionStorage.removeItem("kubota_auth_pro");
       location.reload();
     }
 
-    // ===== TAB NAVIGATION =====
+    // ===== 1. TAB NAVIGATION =====
     function switchTab(tabId) {
       document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('block'));
@@ -271,34 +379,49 @@
       document.getElementById('tab-' + tabId).classList.add('block');
 
       document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.classList.remove('bg-orange-700', 'shadow-inner', 'text-white');
+        btn.classList.remove('bg-kubota-dark', 'shadow-inner', 'text-white');
         btn.classList.add('text-orange-100');
       });
       const activeBtn = document.getElementById('btn-' + tabId);
       if (activeBtn) {
-        activeBtn.classList.add('bg-orange-700', 'shadow-inner', 'text-white');
+        activeBtn.classList.add('bg-kubota-dark', 'shadow-inner', 'text-white');
         activeBtn.classList.remove('text-orange-100');
       }
     }
 
-    // ===== WIRE COLOR SEARCH =====
+    // ===== 2. WIRE COLOR DATABASE =====
     const wireColors = {
-      'W': { name: 'สีขาว (White)', hex: '#FFFFFF', desc: 'สายไฟหลัก มักเป็นไฟชาร์จหรือไฟตรง' },
-      'R': { name: 'สีแดง (Red)', hex: '#DC2626', desc: 'สายไฟบวกตรงจากแบตเตอรี่ (+B)' },
-      'B': { name: 'สีดำ (Black)', hex: '#1F2937', desc: 'สายกราวด์ตัวถัง (Ground / Earth)' },
+      'W': { name: 'สีขาว (White)', hex: '#FFFFFF', desc: 'สายไฟหลัก มักเป็นสายไฟชาร์จจากไดชาร์จ หรือสายไฟเมน' },
+      'R': { name: 'สีแดง (Red)', hex: '#DC2626', desc: 'สายไฟบวกตรงจากแบตเตอรี่ (+B) ไม่ผ่านสวิตช์กุญแจ' },
+      'B': { name: 'สีดำ (Black)', hex: '#1F2937', desc: 'สายกราวด์ตัวถัง (Ground / Chassis Earth)' },
       'Y': { name: 'สีเหลือง (Yellow)', hex: '#FACC15', desc: 'สายไฟระบบสตาร์ท / สัญญาณเตือน' },
       'L': { name: 'สีน้ำเงิน (Blue)', hex: '#2563EB', desc: 'สายไฟส่องสว่าง / รีเลย์ไฟทำงาน' },
-      'G': { name: 'สีเขียว (Green)', hex: '#16A34A', desc: 'สายไฟควบคุมทั่วไป / โซลินอยด์' },
-      'P': { name: 'สีชมพู (Pink)', hex: '#EC4899', desc: 'สายไฟเมนหลังฟิวส์หลัก 60A/40A' },
-      'OR': { name: 'สีส้ม (Orange)', hex: '#EA580C', desc: 'สายไฟผ่านสวิตช์กุญแจ' },
-      'LG': { name: 'สีเขียวอ่อน (Light Green)', hex: '#86EFAC', desc: 'สายสัญญาณเซนเซอร์' },
-      'BR': { name: 'สีน้ำตาล (Brown)', hex: '#78350F', desc: 'สายไฟควบคุมระบบดับเครื่อง' },
-      'SB': { name: 'สีฟ้า (Sky Blue)', hex: '#38BDF8', desc: 'สายไฟควบคุมแตร / ไฟสัญญาณ' },
-      'W/R': { name: 'สีขาว แถบแดง (White/Red)', hex: '#FFFFFF', stripe: '#DC2626', desc: 'สายสตาร์ท / สายชาร์จ' },
+      'G': { name: 'สีเขียว (Green)', hex: '#16A34A', desc: 'สายไฟควบคุมทั่วไป / รีเลย์โซลินอยด์' },
+      'P': { name: 'สีชมพู (Pink)', hex: '#EC4899', desc: 'สายไฟเมนหลังฟิวส์หลัก Slow Blow Fuse (40A/60A)' },
+      'OR': { name: 'สีส้ม (Orange)', hex: '#EA580C', desc: 'สายไฟผ่านสวิตช์กุญแจ (จังหวะ ON / ACC)' },
+      'LG': { name: 'สีเขียวอ่อน (Light Green)', hex: '#86EFAC', desc: 'สายสัญญาณเซนเซอร์ความร้อน / ระดับเชื้อเพลิง' },
+      'BR': { name: 'สีน้ำตาล (Brown)', hex: '#78350F', desc: 'สายไฟควบคุมระบบดับเครื่องยนต์' },
+      'SB': { name: 'สีฟ้า (Sky Blue)', hex: '#38BDF8', desc: 'สายไฟระบบสัญญาณแตร / ออดเตือน' },
+      'V': { name: 'สีม่วง (Violet)', hex: '#8B5CF6', desc: 'สายไฟระบบอุปกรณ์เสริมเฉพาะจุด' },
+      'GR': { name: 'สีเทา (Gray)', hex: '#9CA3AF', desc: 'สายไฟสัญญาณเฉพาะจุด' },
+      'CH': { name: 'สีน้ำตาลเข้ม (Chocolate)', hex: '#532812', desc: 'สายไฟเฉพาะระบบควบคุมการทำงาน' },
+      'DG': { name: 'สีเขียวแก่ (Dark Green)', hex: '#14532D', desc: 'สายไฟเฉพาะจุด' },
+      'W/R': { name: 'สีขาว แถบแดง (White/Red)', hex: '#FFFFFF', stripe: '#DC2626', desc: 'สายสตาร์ท / สายชาร์จเมน' },
+      'W/B': { name: 'สีขาว แถบดำ (White/Black)', hex: '#FFFFFF', stripe: '#000000', desc: 'สายสัญญาณแผงหน้าปัด' },
+      'W/G': { name: 'สีขาว แถบเขียว (White/Green)', hex: '#FFFFFF', stripe: '#16A34A', desc: 'สายไฟควบคุมเฉพาะจุด' },
       'R/W': { name: 'สีแดง แถบขาว (Red/White)', hex: '#DC2626', stripe: '#FFFFFF', desc: 'สายไฟเลี้ยงสวิตช์กุญแจ' },
-      'R/B': { name: 'สีแดง แถบดำ (Red/Black)', hex: '#DC2626', stripe: '#000000', desc: 'สายรีเลย์มอเตอร์สตาร์ท' },
-      'Y/R': { name: 'สีเหลือง แถบแดง (Yellow/Red)', hex: '#FACC15', stripe: '#DC2626', desc: 'สายสวิตช์คลัตช์และเกียร์ว่าง' },
-      'OR/W': { name: 'สีส้ม แถบขาว (Orange/White)', hex: '#EA580C', stripe: '#FFFFFF', desc: 'สายไฟโซลินอยด์' }
+      'R/B': { name: 'สีแดง แถบดำ (Red/Black)', hex: '#DC2626', stripe: '#000000', desc: 'สายไฟขดลวดรีเลย์สตาร์ท' },
+      'R/G': { name: 'สีแดง แถบเขียว (Red/Green)', hex: '#DC2626', stripe: '#16A34A', desc: 'สายไฟวงจรเฉพาะ' },
+      'Y/R': { name: 'สีเหลือง แถบแดง (Yellow/Red)', hex: '#FACC15', stripe: '#DC2626', desc: 'สายสวิตช์คลัตช์และสวิตช์เกียร์ว่าง' },
+      'Y/G': { name: 'สีเหลือง แถบเขียว (Yellow/Green)', hex: '#FACC15', stripe: '#16A34A', desc: 'สายไฟบอกตำแหน่ง' },
+      'Y/B': { name: 'สีเหลือง แถบดำ (Yellow/Black)', hex: '#FACC15', stripe: '#000000', desc: 'สายกราวด์สวิตช์เซฟตี้' },
+      'L/B': { name: 'สีน้ำเงิน แถบดำ (Blue/Black)', hex: '#2563EB', stripe: '#000000', desc: 'สายไฟทำงานไฟสปอตไลท์ท้าย' },
+      'L/R': { name: 'สีน้ำเงิน แถบแดง (Blue/Red)', hex: '#2563EB', stripe: '#DC2626', desc: 'สายสวิตช์ไฟรวม' },
+      'OR/W': { name: 'สีส้ม แถบขาว (Orange/White)', hex: '#EA580C', stripe: '#FFFFFF', desc: 'สายไฟโซลินอยด์ดับเครื่อง' },
+      'P/B': { name: 'สีชมพู แถบดำ (Pink/Black)', hex: '#EC4899', stripe: '#000000', desc: 'สายไฟเฉพาะระบบควบคุม' },
+      'G/R': { name: 'สีเขียว แถบแดง (Green/Red)', hex: '#16A34A', stripe: '#DC2626', desc: 'สายไฟสวิตช์ PTO' },
+      'SB/B': { name: 'สีฟ้า แถบดำ (Sky Blue/Black)', hex: '#38BDF8', stripe: '#000000', desc: 'สายสัญญาณแตรเตือน' },
+      'BR/R': { name: 'สีน้ำตาล แถบแดง (Brown/Red)', hex: '#78350F', stripe: '#DC2626', desc: 'สายรีเลย์ตัดน้ำมัน' }
     };
 
     function searchWireColor() {
@@ -319,11 +442,11 @@
           sample.style.background = item.hex;
         }
       } else {
-        alert('ไม่พบรหัสสีนี้ในระบบ กรุณาตรวจสอบตัวย่อ เช่น W, R, B, OR/W');
+        alert('ไม่พบรหัสสีนี้ในระบบ กรุณาตรวจสอบตัวย่อ เช่น W, R, B, OR/W, Y/G');
       }
     }
 
-    // ===== CLUSTER EMULATOR =====
+    // ===== 3. CLUSTER SERVICE EMULATOR =====
     let currentCluster = 'excavator5';
     let isVirtualKeyOn = false;
 
@@ -331,27 +454,36 @@
       excavator5: {
         title: 'รถขุดจอสี 5 ปุ่ม (KX033 / U36 / U55)',
         buttons: ['1. Menu', '2. Next', '3. Back', '4. Select', '5. Service'],
-        guide: '<strong>ขั้นตอนเข้าโหมดบริการ:</strong> กดปุ่ม [5. Service] ค้างไว้ แล้วบิดกุญแจไปที่ ON<br><strong>ดูหมายเลข ECU:</strong> กดปุ่ม 1 และ 5 ค้างพร้อมกัน แล้วบิดกุญแจ ON'
+        guide: '<strong>การเข้าโหมดบริการ:</strong> กดปุ่ม [5. Service] ค้างไว้ แล้วบิดกุญแจไปที่ ON<br><strong>ดูหมายเลข ECU:</strong> กดปุ่ม 1 และ 5 ค้างพร้อมกัน แล้วบิดกุญแจ ON<br><strong>โหมดผู้ใช้:</strong> กดปุ่ม 1 ค้างไว้ แล้วบิดกุญแจ ON'
       },
       excavator3: {
         title: 'รถขุดจอ I.C.S. 3 ปุ่ม (KX91-3 / U15 / KX080-3)',
         buttons: ['1. Light/AUX', '2. User Set', '3. Service'],
-        guide: '<strong>ขั้นตอนเข้าโหมดบริการ:</strong> กดปุ่ม [3. Service] ค้างไว้ แล้วบิดกุญแจ ON'
+        guide: '<strong>การเข้าโหมดบริการ:</strong> กดปุ่ม [3. Service] ค้างไว้ แล้วบิดกุญแจ ON (กดย้อนกลับใช้ปุ่ม 2 / เลื่อนโหมดกดปุ่ม 3 ค้าง 3 วินาที)<br><strong>ดูหมายเลข ECU:</strong> กดปุ่ม 2 และ 3 ค้างพร้อมกัน แล้วบิดกุญแจ ON'
       },
       combine: {
         title: 'รถเกี่ยวนวดข้าว (DC-70G / DC-93G / DC-105X)',
-        buttons: ['Display Fn', 'Mode C/E', 'Mode P', 'Mode F'],
-        guide: '<strong>ขั้นตอนเข้าโหมดตรวจสอบ:</strong> กดสวิตช์ [Display Functions] ค้างไว้ บิดกุญแจ ON รอเข็มวัดรอบกวาด 1 รอบ แล้วปล่อยปุ่ม'
+        buttons: ['Display Fn', 'Mode C (Check)', 'Mode E (Error)', 'Mode P (Tune)'],
+        guide: '<strong>การเข้าโหมดบริการ:</strong> กดปุ่ม [Display Functions] ค้างไว้ บิดกุญแจ ON รอจนเข็มวัดรอบกวาด 1 รอบ แล้วปล่อยปุ่ม หน้าจอจะแสดงตัว <strong>"C"</strong><br>• <strong>C:</strong> ตรวจสอบสวิตช์/เซนเซอร์ (C1-, C2-d, C3-A, C4-P)<br>• <strong>E:</strong> ประวัติความผิดปกติ (E-dsp ดูโค้ด, E-cls ลบโค้ด)<br>• <strong>P:</strong> การปรับตั้งเซนเซอร์ (P1ALL, P2-)'
       },
       transplanter: {
         title: 'รถดำนา (KA8 / KA8-GS)',
-        buttons: ['โยกขึ้น (เลือก)', 'โยกลง (กลับ)', 'โยกซ้าย/ขวา (สลับ)'],
-        guide: '<strong>ขั้นตอนเข้าโหมดปรับตั้ง:</strong> คันเกียร์ถอยหลัง + ดันคันโยกรูปกากบาทถอยหลัง + บิดกุญแจ ON ค้าง 1-2 วินาที'
+        buttons: ['โยกขึ้น (เลือก)', 'โยกลง (กลับ)', 'โยกหน้า/หลัง (เลื่อน)', 'Diagnosis Mode'],
+        guide: '<strong>โหมดปรับตั้ง (Adjustment Mode):</strong> คันเกียร์ถอยหลัง + ดันคันโยกรูปกากบาทถอยหลัง + บิดกุญแจ ON ค้าง 1-2 วินาที (เข้าเมนู TUNE, TYPE, Errl, ErCL)<br><strong>โหมดอ่านค่าสด (Diagnosis Mode):</strong> บิดกุญแจ ON + คันเกียร์ถอยหลัง + ดันคันโยกไปข้างหน้า 3 ครั้ง'
       }
     };
 
     function selectCluster(type) {
       currentCluster = type;
+      document.querySelectorAll('.cl-btn').forEach(b => {
+        b.classList.remove('bg-kubota', 'text-white');
+        b.classList.add('bg-gray-100', 'text-gray-700');
+      });
+      const activeBtn = document.getElementById('btn-cl-' + (type === 'excavator5' ? 'exc5' : type === 'excavator3' ? 'exc3' : type === 'combine' ? 'com' : 'tra'));
+      if (activeBtn) {
+        activeBtn.classList.add('bg-kubota', 'text-white');
+      }
+
       const cfg = clusterConfigs[type];
       document.getElementById('cluster-title').innerText = cfg.title;
       document.getElementById('cluster-guide').innerHTML = cfg.guide;
@@ -360,7 +492,7 @@
       btnArea.innerHTML = '';
       cfg.buttons.forEach((label, idx) => {
         const btn = document.createElement('button');
-        btn.className = 'bg-slate-700 hover:bg-slate-600 text-xs font-semibold py-2 px-1 rounded text-center border border-slate-600 active:bg-orange-600';
+        btn.className = 'bg-slate-700 hover:bg-slate-600 text-xs font-semibold py-2 px-1 rounded text-center border border-slate-600 active:bg-kubota';
         btn.innerText = label;
         btn.onclick = () => pressClusterButton(idx + 1);
         btnArea.appendChild(btn);
@@ -376,15 +508,15 @@
       const line2 = document.getElementById('screen-line2');
 
       if (isVirtualKeyOn) {
-        keyEl.innerText = 'Key: ON';
-        keyEl.className = 'px-2 py-0.5 rounded text-xs bg-emerald-900 text-emerald-200';
-        line1.innerText = 'KUBOTA METER READY';
-        line2.innerText = 'SYSTEM NORMAL (12.4V)';
+        keyEl.innerText = 'กุญแจ: ON';
+        keyEl.className = 'px-2 py-0.5 rounded text-xs bg-emerald-900 text-emerald-200 font-semibold';
+        line1.innerText = 'KUBOTA METER ONLINE';
+        line2.innerText = 'แรงดันระบบปกติ: 12.4V (STANDBY)';
       } else {
-        keyEl.innerText = 'Key: OFF';
-        keyEl.className = 'px-2 py-0.5 rounded text-xs bg-red-900 text-red-200';
-        line1.innerText = '--- SCREEN OFF ---';
-        line2.innerText = 'บิดกุญแจ ON เพื่อเริ่มทำงาน';
+        keyEl.innerText = 'กุญแจ: OFF';
+        keyEl.className = 'px-2 py-0.5 rounded text-xs bg-red-900 text-red-200 font-semibold';
+        line1.innerText = '--- จอดับ (KEY OFF) ---';
+        line2.innerText = 'บิดสวิตช์กุญแจไปที่ตำแหน่ง ON เพื่อเริ่มการทำงาน';
       }
     }
 
@@ -399,31 +531,56 @@
       if (currentCluster === 'excavator5') {
         if (btnIdx === 5) {
           line1.innerText = '[SERVICE MODE : 01]';
-          line2.innerText = 'DTC CODE CHECK / PUMP SENSOR';
+          line2.innerText = 'DTC CODE CHECK: NO ERROR / AI PUMP READY';
         } else if (btnIdx === 1) {
-          line1.innerText = '[USER SETTING]';
-          line2.innerText = 'TIME & DISPLAY CONFIG';
+          line1.innerText = '[USER SETTING MODE]';
+          line2.innerText = 'ตั้งค่านาฬิกา / ภาษา / ความสว่างหน้าจอ';
+        } else {
+          line1.innerText = `[MENU ${btnIdx}] FUNCTION ACTIVE`;
+          line2.innerText = 'ระบบกำลังอ่านข้อมูลจากกล่อง ECU (Main)';
         }
       } else if (currentCluster === 'combine') {
-        line1.innerText = '[MODE C: SENSOR CHECK]';
-        line2.innerText = 'C1: REEL / C2: AUGER / C3: GRAIN';
+        if (btnIdx === 1 || btnIdx === 2) {
+          line1.innerText = '[MODE C: SENSOR & SWITCH]';
+          line2.innerText = 'C1- REEL | C2-d AUGER | C3-A MONROE';
+        } else if (btnIdx === 3) {
+          line1.innerText = '[MODE E: DTC HISTORY]';
+          line2.innerText = 'E-dsp: แสดงโค้ดประวัติ | E-cls: ลบโค้ด';
+        } else {
+          line1.innerText = '[MODE P: SENSOR CALIBRATION]';
+          line2.innerText = 'P1ALL: ปรับเซนเซอร์รวม | P2-: ตั้งประเภทรุ่น';
+        }
       } else if (currentCluster === 'transplanter') {
-        line1.innerText = '[TUNE: LINK SENSOR]';
-        line2.innerText = 'VOLTAGE: 1.85V (PASSED: 1.56-2.19V)';
+        if (btnIdx === 4) {
+          line1.innerText = '[DIAGNOSIS MODE: LnkS]';
+          line2.innerText = 'ค่าเซนเซอร์ลิ้งก์: 1.85V (เกณฑ์ปกติ 1.56 - 2.19V)';
+        } else {
+          line1.innerText = '[TUNE: ADJUSTMENT MODE]';
+          line2.innerText = 'TUNE (ปรับละเอียด) | TYPE (ประเภทรุ่น) | Errl (โค้ด)';
+        }
+      } else {
+        line1.innerText = '[I.C.S. SERVICE MODE]';
+        line2.innerText = 'DTC LOG CHECK / SENSOR MONITOR';
       }
     }
 
-    // ===== VOLTAGE QUIZ LAB =====
+    // ===== 4. VOLTAGE QUIZ LAB (SumTotal 5 Circuits) =====
     let currentVLogic = 1;
-    let switchState1 = false;
-    let switchState2 = false;
+    let sw1 = false;
+    let sw2 = false;
+    let sw3 = false;
 
     function loadVoltageCircuit(id) {
       currentVLogic = id;
-      document.getElementById('btn-vc1').className = id === 1 ? 'vc-btn px-3 py-1.5 rounded-lg text-sm bg-[#F37021] text-white font-medium' : 'vc-btn px-3 py-1.5 rounded-lg text-sm bg-gray-100 text-gray-700 font-medium hover:bg-gray-200';
-      document.getElementById('btn-vc4').className = id === 4 ? 'vc-btn px-3 py-1.5 rounded-lg text-sm bg-[#F37021] text-white font-medium' : 'vc-btn px-3 py-1.5 rounded-lg text-sm bg-gray-100 text-gray-700 font-medium hover:bg-gray-200';
-      switchState1 = false;
-      switchState2 = false;
+      document.querySelectorAll('.vc-btn').forEach(b => {
+        b.classList.remove('bg-kubota', 'text-white');
+        b.classList.add('bg-gray-100', 'text-gray-700');
+      });
+      const activeBtn = document.getElementById('btn-vc' + id);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-kubota', 'text-white');
+      }
+      sw1 = false; sw2 = false; sw3 = false;
       renderVoltageCircuit();
     }
 
@@ -433,47 +590,199 @@
       feedback.innerText = '';
 
       if (currentVLogic === 1) {
-        const vWire = switchState1 ? '#DC2626' : '#9CA3AF';
-        const lampColor = switchState1 ? '#FACC15' : '#E5E7EB';
+        // Circuit 1: Single Switch & Lamp (Q1-2)
+        const wireColor = sw1 ? '#DC2626' : '#2563EB';
+        const lampColor = sw1 ? '#FACC15' : '#E5E7EB';
         container.innerHTML = `
-          <svg width="600" height="260" viewBox="0 0 600 260" class="bg-white p-2 rounded-lg border">
-            <line x1="80" y1="200" x2="80" y2="100" stroke="#DC2626" stroke-width="4"/>
-            <rect x="65" y="190" width="30" height="20" fill="#1F2937" rx="3"/>
-            <text x="80" y="230" text-anchor="middle" font-size="12" font-weight="bold">BATT (12V)</text>
-            <line x1="80" y1="100" x2="220" y2="100" stroke="#DC2626" stroke-width="4"/>
-            <g onclick="toggleSw1()" class="cursor-pointer">
-              <circle cx="220" cy="100" r="6" fill="#1F2937"/>
-              <circle cx="340" cy="100" r="6" fill="#1F2937"/>
-              <line x1="220" y1="100" x2="${switchState1 ? 340 : 320}" y2="${switchState1 ? 100 : 70}" stroke="#DC2626" stroke-width="4"/>
-              <text x="280" y="60" text-anchor="middle" font-size="13" font-weight="bold" fill="#F37021">สวิตช์ [${switchState1 ? 'ON' : 'OFF'}] (คลิก)</text>
+          <svg width="600" height="240" viewBox="0 0 600 240" class="bg-white p-2 rounded-xl border">
+            <!-- Batt -->
+            <line x1="80" y1="180" x2="80" y2="80" stroke="#DC2626" stroke-width="4"/>
+            <rect x="65" y="170" width="30" height="20" fill="#1F2937" rx="3"/>
+            <text x="80" y="210" text-anchor="middle" font-size="11" font-weight="bold">BATT (12V)</text>
+            
+            <!-- Switch -->
+            <line x1="80" y1="80" x2="220" y2="80" stroke="#DC2626" stroke-width="4"/>
+            <g onclick="toggleSw(1)" class="cursor-pointer">
+              <circle cx="220" cy="80" r="5" fill="#1F2937"/>
+              <circle cx="320" cy="80" r="5" fill="#1F2937"/>
+              <line x1="220" y1="80" x2="${sw1 ? 320 : 300}" y2="${sw1 ? 80 : 55}" stroke="#DC2626" stroke-width="4"/>
+              <text x="270" y="50" text-anchor="middle" font-size="11" font-weight="bold" fill="#F37021">สวิตช์ [${sw1 ? 'ON' : 'OFF'}] (คลิก)</text>
             </g>
-            <line x1="340" y1="100" x2="460" y2="100" stroke="${vWire}" stroke-width="4"/>
-            <line x1="460" y1="100" x2="460" y2="140" stroke="${vWire}" stroke-width="4"/>
-            <circle cx="460" cy="160" r="20" fill="${lampColor}" stroke="#1F2937" stroke-width="3"/>
-            <text x="460" y="165" text-anchor="middle" font-size="12" font-weight="bold">LOAD</text>
-            <line x1="460" y1="180" x2="460" y2="210" stroke="#2563EB" stroke-width="4"/>
-            <line x1="440" y1="210" x2="480" y2="210" stroke="#2563EB" stroke-width="3"/>
-            <line x1="450" y1="215" x2="470" y2="215" stroke="#2563EB" stroke-width="3"/>
-            <text x="460" y="235" text-anchor="middle" font-size="11">GND</text>
-            <g transform="translate(60, 130)">${renderVoltageBadge('A', '12')}</g>
-            <g transform="translate(180, 70)">${renderVoltageBadge('B', '12')}</g>
-            <g transform="translate(360, 70)">${renderVoltageBadge('C', switchState1 ? '12' : '0')}</g>
-            <g transform="translate(480, 190)">${renderVoltageBadge('D', '0')}</g>
+
+            <!-- Lamp -->
+            <line x1="320" y1="80" x2="440" y2="80" stroke="${wireColor}" stroke-width="4"/>
+            <line x1="440" y1="80" x2="440" y2="120" stroke="${wireColor}" stroke-width="4"/>
+            <circle cx="440" cy="140" r="18" fill="${lampColor}" stroke="#1F2937" stroke-width="3"/>
+            <line x1="440" y1="158" x2="440" y2="185" stroke="#2563EB" stroke-width="4"/>
+            <!-- Ground -->
+            <line x1="425" y1="185" x2="455" y2="185" stroke="#2563EB" stroke-width="3"/>
+            <line x1="432" y1="190" x2="448" y2="190" stroke="#2563EB" stroke-width="3"/>
+
+            <!-- Points A, B, C, D Inputs -->
+            <g transform="translate(60, 110)">${renderVProbe('A', '12')}</g>
+            <g transform="translate(180, 50)">${renderVProbe('B', '12')}</g>
+            <g transform="translate(340, 50)">${renderVProbe('C', sw1 ? '12' : '0')}</g>
+            <g transform="translate(460, 155)">${renderVProbe('D', '0')}</g>
+          </svg>
+        `;
+      } else if (currentVLogic === 2) {
+        // Circuit 2: Series 2 Switches + Ground Switch (Q8-10)
+        const wAfterSw1 = sw1 ? '#DC2626' : '#2563EB';
+        const wAfterSw2 = (sw1 && sw2) ? '#DC2626' : '#2563EB';
+        const lampOn = sw1 && sw2 && sw3;
+        container.innerHTML = `
+          <svg width="640" height="240" viewBox="0 0 640 240" class="bg-white p-2 rounded-xl border">
+            <!-- Batt -->
+            <line x1="60" y1="180" x2="60" y2="80" stroke="#DC2626" stroke-width="4"/>
+            <rect x="45" y="170" width="30" height="18" fill="#1F2937" rx="3"/>
+            <text x="60" y="205" text-anchor="middle" font-size="10" font-weight="bold">BATT (12V)</text>
+
+            <!-- SW1 -->
+            <line x1="60" y1="80" x2="160" y2="80" stroke="#DC2626" stroke-width="4"/>
+            <g onclick="toggleSw(1)" class="cursor-pointer">
+              <circle cx="160" cy="80" r="4" fill="#1F2937"/><circle cx="230" cy="80" r="4" fill="#1F2937"/>
+              <line x1="160" y1="80" x2="${sw1 ? 230 : 215}" y2="${sw1 ? 80 : 60}" stroke="#DC2626" stroke-width="3.5"/>
+              <text x="195" y="52" text-anchor="middle" font-size="10" font-weight="bold" fill="#F37021">SW1 [${sw1 ? 'ON' : 'OFF'}]</text>
+            </g>
+
+            <!-- SW2 -->
+            <line x1="230" y1="80" x2="310" y2="80" stroke="${wAfterSw1}" stroke-width="4"/>
+            <g onclick="toggleSw(2)" class="cursor-pointer">
+              <circle cx="310" cy="80" r="4" fill="#1F2937"/><circle cx="380" cy="80" r="4" fill="#1F2937"/>
+              <line x1="310" y1="80" x2="${sw2 ? 380 : 365}" y2="${sw2 ? 80 : 60}" stroke="${wAfterSw1}" stroke-width="3.5"/>
+              <text x="345" y="52" text-anchor="middle" font-size="10" font-weight="bold" fill="#F37021">SW2 [${sw2 ? 'ON' : 'OFF'}]</text>
+            </g>
+
+            <!-- Lamp & SW3 (Ground SW) -->
+            <line x1="380" y1="80" x2="460" y2="80" stroke="${wAfterSw2}" stroke-width="4"/>
+            <line x1="460" y1="80" x2="460" y2="105" stroke="${wAfterSw2}" stroke-width="4"/>
+            <circle cx="460" cy="120" r="15" fill="${lampOn ? '#FACC15' : '#E5E7EB'}" stroke="#1F2937" stroke-width="2.5"/>
+            <line x1="460" y1="135" x2="460" y2="150" stroke="${sw1 && sw2 ? '#DC2626' : '#2563EB'}" stroke-width="4"/>
+            
+            <g onclick="toggleSw(3)" class="cursor-pointer">
+              <circle cx="460" cy="150" r="4" fill="#1F2937"/><circle cx="460" cy="190" r="4" fill="#1F2937"/>
+              <line x1="460" y1="150" x2="${sw3 ? 460 : 475}" y2="${sw3 ? 190 : 180}" stroke="#2563EB" stroke-width="3.5"/>
+              <text x="510" y="170" text-anchor="middle" font-size="10" font-weight="bold" fill="#F37021">GND SW [${sw3 ? 'ON' : 'OFF'}]</text>
+            </g>
+            <line x1="460" y1="190" x2="460" y2="205" stroke="#2563EB" stroke-width="4"/>
+            <line x1="448" y1="205" x2="472" y2="205" stroke="#2563EB" stroke-width="2.5"/>
+
+            <g transform="translate(45, 110)">${renderVProbe('A', '12')}</g>
+            <g transform="translate(130, 48)">${renderVProbe('B', '12')}</g>
+            <g transform="translate(245, 48)">${renderVProbe('C', sw1 ? '12' : '0')}</g>
+            <g transform="translate(390, 48)">${renderVProbe('D', (sw1 && sw2) ? '12' : '0')}</g>
+            <g transform="translate(480, 100)">${renderVProbe('E', (sw1 && sw2 && !sw3) ? '12' : '0')}</g>
+            <g transform="translate(480, 185)">${renderVProbe('F', '0')}</g>
+          </svg>
+        `;
+      } else if (currentVLogic === 3) {
+        // Circuit 3: Parallel 2 Branches (Q11-12)
+        const wMain = sw1 ? '#DC2626' : '#2563EB';
+        const wBranch1 = (sw1 && sw2) ? '#DC2626' : '#2563EB';
+        const wBranch2 = (sw1 && sw3) ? '#DC2626' : '#2563EB';
+        container.innerHTML = `
+          <svg width="640" height="240" viewBox="0 0 640 240" class="bg-white p-2 rounded-xl border">
+            <!-- Batt & Main SW -->
+            <line x1="60" y1="180" x2="60" y2="70" stroke="#DC2626" stroke-width="4"/>
+            <line x1="60" y1="70" x2="140" y2="70" stroke="#DC2626" stroke-width="4"/>
+            <g onclick="toggleSw(1)" class="cursor-pointer">
+              <circle cx="140" cy="70" r="4" fill="#1F2937"/><circle cx="210" cy="70" r="4" fill="#1F2937"/>
+              <line x1="140" y1="70" x2="${sw1 ? 210 : 195}" y2="${sw1 ? 70 : 50}" stroke="#DC2626" stroke-width="3.5"/>
+              <text x="175" y="45" text-anchor="middle" font-size="10" font-weight="bold" fill="#F37021">MAIN SW [${sw1 ? 'ON' : 'OFF'}]</text>
+            </g>
+            <line x1="210" y1="70" x2="280" y2="70" stroke="${wMain}" stroke-width="4"/>
+
+            <!-- Branch 1 (Left) -->
+            <line x1="280" y1="70" x2="280" y2="100" stroke="${wMain}" stroke-width="4"/>
+            <circle cx="280" cy="115" r="14" fill="${sw1 && sw2 ? '#FACC15' : '#E5E7EB'}" stroke="#1F2937" stroke-width="2.5"/>
+            <line x1="280" y1="129" x2="280" y2="145" stroke="${wMain}" stroke-width="4"/>
+            <g onclick="toggleSw(2)" class="cursor-pointer">
+              <circle cx="280" cy="145" r="4" fill="#1F2937"/><circle cx="280" cy="185" r="4" fill="#1F2937"/>
+              <line x1="280" y1="145" x2="${sw2 ? 280 : 295}" y2="${sw2 ? 185 : 175}" stroke="#2563EB" stroke-width="3.5"/>
+              <text x="325" y="165" text-anchor="middle" font-size="9" font-weight="bold" fill="#F37021">SW-L [${sw2 ? 'ON' : 'OFF'}]</text>
+            </g>
+            <line x1="280" y1="185" x2="280" y2="205" stroke="#2563EB" stroke-width="3"/>
+
+            <!-- Branch 2 (Right) -->
+            <line x1="280" y1="70" x2="450" y2="70" stroke="${wMain}" stroke-width="4"/>
+            <g onclick="toggleSw(3)" class="cursor-pointer">
+              <circle cx="450" cy="70" r="4" fill="#1F2937"/><circle cx="510" cy="70" r="4" fill="#1F2937"/>
+              <line x1="450" y1="70" x2="${sw3 ? 510 : 495}" y2="${sw3 ? 70 : 50}" stroke="${wMain}" stroke-width="3.5"/>
+              <text x="480" y="45" text-anchor="middle" font-size="10" font-weight="bold" fill="#F37021">SW-R [${sw3 ? 'ON' : 'OFF'}]</text>
+            </g>
+            <line x1="510" y1="70" x2="550" y2="70" stroke="${wBranch2}" stroke-width="4"/>
+            <line x1="550" y1="70" x2="550" y2="110" stroke="${wBranch2}" stroke-width="4"/>
+            <circle cx="550" cy="125" r="14" fill="${sw1 && sw3 ? '#FACC15' : '#E5E7EB'}" stroke="#1F2937" stroke-width="2.5"/>
+            <line x1="550" y1="139" x2="550" y2="205" stroke="#2563EB" stroke-width="3"/>
+
+            <g transform="translate(110, 40)">${renderVProbe('B', '12')}</g>
+            <g transform="translate(225, 40)">${renderVProbe('C', sw1 ? '12' : '0')}</g>
+            <g transform="translate(290, 95)">${renderVProbe('G', (sw1 && !sw2) ? '12' : '0')}</g>
+            <g transform="translate(290, 185)">${renderVProbe('H', '0')}</g>
+          </svg>
+        `;
+      } else if (currentVLogic === 4) {
+        // Circuit 4: Relay Driving Lamp (Q13-16)
+        const relayActive = sw1;
+        container.innerHTML = `
+          <svg width="640" height="240" viewBox="0 0 640 240" class="bg-white p-2 rounded-xl border">
+            <!-- Batt & Fuses -->
+            <line x1="60" y1="180" x2="60" y2="80" stroke="#DC2626" stroke-width="4"/>
+            <text x="60" y="200" text-anchor="middle" font-size="10" font-weight="bold">BATT</text>
+            <line x1="60" y1="80" x2="160" y2="80" stroke="#DC2626" stroke-width="4"/>
+            <rect x="160" y="70" width="35" height="20" fill="#F97316" rx="2"/><text x="177" y="84" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">5A</text>
+            <line x1="60" y1="110" x2="160" y2="110" stroke="#DC2626" stroke-width="4"/>
+            <rect x="160" y="100" width="35" height="20" fill="#3B82F6" rx="2"/><text x="177" y="114" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">3A</text>
+
+            <!-- SW for Coil -->
+            <line x1="195" y1="80" x2="250" y2="80" stroke="#DC2626" stroke-width="4"/>
+            <g onclick="toggleSw(1)" class="cursor-pointer">
+              <circle cx="250" cy="80" r="4" fill="#1F2937"/><circle cx="310" cy="80" r="4" fill="#1F2937"/>
+              <line x1="250" y1="80" x2="${sw1 ? 310 : 295}" y2="${sw1 ? 80 : 60}" stroke="#DC2626" stroke-width="3.5"/>
+              <text x="280" y="52" text-anchor="middle" font-size="10" font-weight="bold" fill="#F37021">COIL SW [${sw1 ? 'ON' : 'OFF'}]</text>
+            </g>
+
+            <!-- Relay Box -->
+            <rect x="360" y="55" width="110" height="90" fill="#F8FAFC" stroke="#0F172A" stroke-width="2" rx="4"/>
+            <text x="415" y="70" text-anchor="middle" font-size="9" font-weight="bold">RELAY</text>
+            <!-- Coil -->
+            <line x1="310" y1="80" x2="380" y2="80" stroke="${sw1 ? '#DC2626' : '#2563EB'}" stroke-width="3"/>
+            <rect x="380" y="75" width="20" height="40" fill="#E2E8F0" stroke="#1E293B"/>
+            <line x1="390" y1="115" x2="390" y2="180" stroke="#2563EB" stroke-width="3"/>
+            <!-- Contact -->
+            <line x1="195" y1="110" x2="430" y2="110" stroke="#DC2626" stroke-width="4"/>
+            <circle cx="430" cy="90" r="3" fill="#000"/><circle cx="450" cy="90" r="3" fill="#000"/>
+            <line x1="430" y1="90" x2="${relayActive ? 450 : 445}" y2="${relayActive ? 90 : 75}" stroke="#DC2626" stroke-width="3"/>
+            <line x1="450" y1="90" x2="520" y2="90" stroke="${relayActive ? '#DC2626' : '#2563EB'}" stroke-width="4"/>
+            <circle cx="520" cy="115" r="14" fill="${relayActive ? '#FACC15' : '#E5E7EB'}" stroke="#000" stroke-width="2"/>
+            <line x1="520" y1="129" x2="520" y2="180" stroke="#2563EB" stroke-width="3"/>
+
+            <g transform="translate(100, 48)">${renderVProbe('B', '12')}</g>
+            <g transform="translate(315, 48)">${renderVProbe('C', sw1 ? '12' : '0')}</g>
+            <g transform="translate(395, 40)">${renderVProbe('D', '12')}</g>
+            <g transform="translate(455, 40)">${renderVProbe('E', sw1 ? '12' : '0')}</g>
           </svg>
         `;
       } else {
+        // Circuit 5: H-Bridge Reversing Motor (Q17-19)
         container.innerHTML = `
           <div class="text-center p-4">
-            <h4 class="font-bold text-gray-800 mb-2">วงจรรีเลย์ 5 ขาคู่ กลับทางหมุนมอเตอร์ (H-Bridge)</h4>
+            <h4 class="font-bold text-gray-800 text-sm mb-1">วงจรรีเลย์ 5 ขาคู่ กลับทางหมุนมอเตอร์ไฟฟ้า (H-Bridge Motor Control)</h4>
+            <p class="text-xs text-gray-500 mb-4">คลิกสลับสวิตช์เพื่อทดสอบการหมุนกลับทิศทาง (ตรงตามระบบท่อส่งข้าว DC-95GM และก้านขีด KA8)</p>
             <div class="flex justify-center gap-4 mb-4">
-              <button onclick="toggleSw1()" class="px-3 py-1 bg-[#F37021] text-white rounded text-xs">สวิตช์ซ้าย: [${switchState1 ? 'ON' : 'OFF'}]</button>
-              <button onclick="toggleSw2()" class="px-3 py-1 bg-[#F37021] text-white rounded text-xs">สวิตช์ขวา: [${switchState2 ? 'ON' : 'OFF'}]</button>
+              <button onclick="toggleSw(1)" class="px-4 py-1.5 bg-kubota text-white rounded-lg text-xs font-bold shadow">สวิตช์ซ้าย: [${sw1 ? 'ON' : 'OFF'}]</button>
+              <button onclick="toggleSw(2)" class="px-4 py-1.5 bg-kubota text-white rounded-lg text-xs font-bold shadow">สวิตช์ขวา: [${sw2 ? 'ON' : 'OFF'}]</button>
             </div>
-            <div class="inline-block p-4 bg-white border rounded-xl shadow-sm">
+            <div class="inline-block p-5 bg-white border-2 rounded-2xl shadow-sm">
               <div class="flex items-center gap-6 font-mono font-bold">
-                <div>ขั้ว G: <span class="px-2 py-1 rounded ${switchState1 ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700'}">${switchState1 ? '12 V' : '0 V'}</span></div>
-                <div class="w-16 h-16 rounded-full border-4 border-slate-700 flex items-center justify-center text-lg ${switchState1 && !switchState2 ? 'animate-spin' : ''}">( M )</div>
-                <div>ขั้ว H: <span class="px-2 py-1 rounded ${switchState2 ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700'}">${switchState2 ? '12 V' : '0 V'}</span></div>
+                <div>ขั้ว G: <span class="px-2.5 py-1 rounded text-sm ${sw1 ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700'}">${sw1 ? '12 V' : '0 V'}</span></div>
+                <div class="w-16 h-16 rounded-full border-4 border-slate-700 flex items-center justify-center text-lg ${sw1 && !sw2 ? 'animate-spin' : ''}">
+                  ( M )
+                </div>
+                <div>ขั้ว H: <span class="px-2.5 py-1 rounded text-sm ${sw2 ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700'}">${sw2 ? '12 V' : '0 V'}</span></div>
+              </div>
+              <div class="mt-4 text-xs font-semibold text-gray-600 bg-gray-50 p-2 rounded-lg">
+                สถานะมอเตอร์: ${(!sw1 && !sw2) ? 'หยุดหมุน (Brake: 0V ทั้งสองฝั่ง)' : (sw1 && !sw2) ? 'หมุนปกติ (กระแสไหล G -> H: 逆転)' : (!sw1 && sw2) ? 'หมุนกลับทิศ (กระแสไหล H -> G: 正転)' : 'หยุดหมุน (12V ทั้งสองฝั่ง: 停止)'}
               </div>
             </div>
           </div>
@@ -481,27 +790,25 @@
       }
     }
 
-    function renderVoltageBadge(letter, expectedVal) {
+    function renderVProbe(letter, expectedVal) {
       return `
-        <foreignObject width="80" height="50">
-          <div class="flex flex-col items-center bg-white border border-gray-400 rounded p-1 shadow-sm text-xs">
+        <foreignObject width="70" height="46">
+          <div class="flex flex-col items-center bg-white border border-gray-400 rounded p-0.5 shadow-sm text-[10px]">
             <span class="font-bold text-gray-800">${letter}</span>
-            <select id="probe-${letter}" data-expected="${expectedVal}" class="border rounded text-[11px] px-1 py-0.5 mt-0.5 outline-none font-bold">
-              <option value="">เลือก</option>
-              <option value="12">12 V</option>
-              <option value="0">0 V</option>
+            <select id="probe-${letter}" data-expected="${expectedVal}" class="border rounded text-[10px] px-1 py-0.5 outline-none font-bold bg-gray-50">
+              <option value="">--</option>
+              <option value="12">12V</option>
+              <option value="0">0V</option>
             </select>
           </div>
         </foreignObject>
       `;
     }
 
-    function toggleSw1() {
-      switchState1 = !switchState1;
-      renderVoltageCircuit();
-    }
-    function toggleSw2() {
-      switchState2 = !switchState2;
+    function toggleSw(idx) {
+      if (idx === 1) sw1 = !sw1;
+      if (idx === 2) sw2 = !sw2;
+      if (idx === 3) sw3 = !sw3;
       renderVoltageCircuit();
     }
 
@@ -512,52 +819,97 @@
         const expected = sel.getAttribute('data-expected');
         if (sel.value !== expected) {
           allCorrect = false;
-          sel.classList.add('bg-red-100', 'border-red-500');
+          sel.className = 'border rounded text-[10px] px-1 py-0.5 outline-none font-bold bg-red-100 border-red-500 text-red-700';
         } else {
-          sel.classList.remove('bg-red-100', 'border-red-500');
-          sel.classList.add('bg-green-100', 'border-green-500');
+          sel.className = 'border rounded text-[10px] px-1 py-0.5 outline-none font-bold bg-green-100 border-green-500 text-green-700';
         }
       });
       const feedback = document.getElementById('voltage-feedback');
       if (allCorrect) {
-        feedback.innerText = 'ถูกต้องทั้งหมด! (Correct)';
-        feedback.className = 'text-sm font-bold text-emerald-600';
+        feedback.innerText = 'ถูกต้องทั้งหมด! (Correct, go to next)';
+        feedback.className = 'text-xs font-bold text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-200';
       } else {
-        feedback.innerText = 'มีจุดที่วัดแรงดันไม่ถูกต้อง';
-        feedback.className = 'text-sm font-bold text-red-600';
+        feedback.innerText = 'มีจุดที่วัดแรงดันไม่ถูกต้อง กรุณาตรวจสอบเส้นทางไฟ';
+        feedback.className = 'text-xs font-bold text-red-600 bg-red-50 px-3 py-1.5 rounded-lg border border-red-200';
       }
     }
 
     function resetVoltageCircuit() {
-      switchState1 = false;
-      switchState2 = false;
+      sw1 = false; sw2 = false; sw3 = false;
       renderVoltageCircuit();
     }
 
-    // ===== EXAM LOGIC =====
-    let currentQuizIndex = 0;
-    let quizScore = 0;
-    const wireQuizzes = [
-      { q: 'รหัสสีสายไฟ "W/R" หมายถึงสีใด?', options: ['ขาว แถบแดง', 'แดง แถบขาว', 'ขาว แถบดำ', 'ส้ม แถบแดง'], ans: 0 },
-      { q: 'รหัสสีสายไฟ "B" หมายถึงสีใดในวงจร Kubota?', options: ['สีน้ำเงิน', 'สีดำ', 'สีน้ำตาล', 'สีฟ้า'], ans: 1 },
-      { q: 'สายไฟเส้นใดต่อไปนี้ใช้เป็นสายไฟตรงจากแบตเตอรี่ (+B)?', options: ['B (ดำ)', 'W (ขาว)', 'R (แดง)', 'G (เขียว)'], ans: 2 },
-      { q: 'รหัสสี "Or/W" หมายถึงสีใด?', options: ['ส้ม แถบขาว', 'ขาว แถบส้ม', 'น้ำตาล แถบขาว', 'ชมพู แถบขาว'], ans: 0 },
-      { q: 'รหัสสี "Lg" ย่อมาจากคำว่าอะไร?', options: ['Light Gray', 'Light Green', 'Lime Gold', 'Line Ground'], ans: 1 }
-    ];
+    // ===== 5. EXAM SUITE (3 Categories - 32 Questions) =====
+    let currentExamCat = 'wire';
+    let currentQIdx = 0;
+    let examScore = 0;
 
-    function renderQuizQuestion() {
-      const qBox = document.getElementById('quiz-question-box');
+    const examQuestions = {
+      wire: [
+        { q: 'รหัสสีสายไฟ "W/R" หมายถึงสีใด?', opts: ['ขาว แถบแดง', 'แดง แถบขาว', 'ขาว แถบดำ', 'ส้ม แถบแดง'], ans: 0 },
+        { q: 'รหัสสีสายไฟ "B" หมายถึงสีใดในวงจร Kubota?', opts: ['สีน้ำเงิน', 'สีดำ (Ground)', 'สีน้ำตาล', 'สีฟ้า'], ans: 1 },
+        { q: 'สายไฟเส้นใดต่อไปนี้ใช้เป็นสายไฟตรงจากแบตเตอรี่ (+B)?', opts: ['B (ดำ)', 'W (ขาว)', 'R (แดง)', 'G (เขียว)'], ans: 2 },
+        { q: 'รหัสสี "Or/W" หมายถึงสีใด?', opts: ['ส้ม แถบขาว', 'ขาว แถบส้ม', 'น้ำตาล แถบขาว', 'ชมพู แถบขาว'], ans: 0 },
+        { q: 'รหัสสี "Lg" ย่อมาจากคำว่าอะไร?', opts: ['Light Gray', 'Light Green', 'Lime Gold', 'Line Ground'], ans: 1 },
+        { q: 'หากเปลี่ยนขนาดสายไฟจาก 1 B/R เป็น 0.5 B/R จะเกิดผลกระทบอย่างไร?', opts: ['กระแสไหลดีขึ้น', 'รับกระแสได้เท่าเดิม', 'เกิดความร้อนสะสม ฉนวนละลาย และอาจไฟไหม้', 'ระบบชาร์จไฟเร็วขึ้น'], ans: 2 },
+        { q: 'รหัสสี "Sb" หมายถึงสีใด?', opts: ['สีน้ำตาล', 'สีฟ้า (Sky Blue)', 'สีเทา', 'สีม่วง'], ans: 1 },
+        { q: 'รหัสสี "Y/R" มักใช้ในวงจรใด?', opts: ['สวิตช์คลัตช์และเกียร์ว่าง', 'ไฟหน้าใหญ่', 'แตรรถ', 'ไฟเลี้ยว'], ans: 0 },
+        { q: 'รหัสสี "Br" หมายถึงสีใด?', opts: ['สีดำ', 'สีน้ำตาล (Brown)', 'สีน้ำเงิน', 'สีชมพู'], ans: 1 },
+        { q: 'สายไฟ "P" (Pink) ในแทรกเตอร์มักต่อมาจากจุดใด?', opts: ['ฟิวส์หลัก Slow blow fuse (40A/60A)', 'มอเตอร์ปัดน้ำฝน', 'สวิตช์ไฟเลี้ยว', 'สวิตช์แอร์'], ans: 0 }
+      ],
+      symbol: [
+        { q: 'สัญลักษณ์ขดลวดคู่ที่มีสัญลักษณ์ P และ H ต่อร่วมกัน หมายถึงอุปกรณ์ใด?', opts: ['มอเตอร์สตาร์ท', 'โซลินอยด์ดับเครื่องยนต์', 'รีเลย์ 5 ขา', 'ไดชาร์จ'], ans: 1 },
+        { q: 'รีเลย์ 5 ขา (Changeover) ในสภาวะปกติ (ยังไม่จ่ายไฟเข้าขดลวด) ขาใดจะต่อถึงกัน?', opts: ['ขา 3 กับ ขา 4 (NC)', 'ขา 3 กับ ขา 5 (NO)', 'ขา 1 กับ ขา 5', 'ขา 2 กับ ขา 4'], ans: 0 },
+        { q: 'สัญลักษณ์วงกลมมีฟันปลาตัวต้านทานอยู่ด้านใน หมายถึงอุปกรณ์ใด?', opts: ['เซนเซอร์ตรวจวัดอุณหภูมิน้ำ / ระดับเชื้อเพลิง', 'หลอดไฟ', 'ฟิวส์กระดูก', 'ไดโอด'], ans: 0 },
+        { q: 'ฟิวส์หลักชนิด Slow Blow Fuse มักใช้สัญลักษณ์แบบใดและขนาดเท่าใด?', opts: ['รูปวงรี 40A / 50A / 60A', 'รูปสี่เหลี่ยม 5A', 'รูปสามเหลี่ยม 10A', 'รูปวงกลม 15A'], ans: 0 },
+        { q: 'สวิตช์นิรภัยคลัตช์ (Clutch Safety Switch) จัดเป็นสวิตช์ประเภทใด?', opts: ['Normally Open (NO) ปกติเปิด', 'Normally Closed (NC) ปกติปิด', 'สวิตช์หรี่ไฟ', 'สวิตช์แม่เหล็ก'], ans: 0 },
+        { q: 'สวิตช์แรงดันน้ำมันเครื่องยนต์ เมื่อติดเครื่องยนต์แล้ววงจรจะเป็นอย่างไร?', opts: ['ต่อวงจรลงกราวด์ (0 โอห์ม)', 'ตัดวงจรออกจากกราวด์ (ไม่ต่อถึงกัน)', 'ลัดวงจรเข้าขั้วบวก', 'แรงดันเพิ่มเป็น 24V'], ans: 1 },
+        { q: 'สัญลักษณ์มอเตอร์สตาร์ทที่มีขั้ว B, ST, M ขั้ว ST รับไฟมาจากที่ใด?', opts: ['สวิตช์กุญแจจังหวะ START (ผ่านรีเลย์)', 'ขั้วบวกแบตเตอรี่โดยตรง', 'ไดชาร์จขั้ว WL', 'โครงตัวถัง'], ans: 0 },
+        { q: 'ตัวต้านทานแบบปรับค่าได้ 3 ขา (Potentiometer) ขาที่ 2 ทำหน้าที่อะไร?', opts: ['ขาส่งสัญญาณแรงดันไฟแปรผัน', 'ขาไฟเลี้ยง +12V', 'ขากราวด์', 'ขาไฟฉุกเฉิน'], ans: 0 },
+        { q: 'จุดตัดของเส้นสายไฟที่มีจุดกลมสีดำทึบ (Dot) หมายถึงอะไร?', opts: ['สายไฟเชื่อมต่อถึงกัน', 'สายไฟพาดข้ามกันโดยไม่ต่อ', 'จุดใส่ฟิวส์', 'จุดลงกราวด์'], ans: 0 },
+        { q: 'ไดโอด (Diode) มีหน้าที่สำคัญอย่างไรในวงจรโซลินอยด์ดับเครื่อง?', opts: ['ป้องกันกระแสไหลย้อนกลับและตัดต่อไฟดึง', 'เพิ่มแรงดันไฟเป็น 2 เท่า', 'ชาร์จไฟเข้าแบตเตอรี่', 'ลดความร้อนขดลวด'], ans: 0 },
+        { q: 'สวิตช์กุญแจจังหวะ "ON" ขั้วใดต่อถึงกัน?', opts: ['B กับ AC (0 โอห์ม)', 'B กับ ST', 'AC กับ ST', 'ไม่ต่อถึงกันทุกขั้ว'], ans: 0 },
+        { q: 'สัญลักษณ์สายกราวด์ (Ground / Chassis) ทำหน้าที่ใดในวงจรรถ?', opts: ['เป็นทางเดินกระแสไฟขั้วลบกลับสู่แบตเตอรี่', 'เพิ่มความต้านทาน', 'สำรองไฟสำรอง', 'ตัดไฟอัตโนมัติ'], ans: 0 }
+      ],
+      starter: [
+        { q: 'ขดลวดในโซลินอยด์ของมอเตอร์สตาร์ทที่ต่ออยู่ระหว่างขั้ว 50 กับโครงมอเตอร์คือข้อใด?', opts: ['ขดลวดฟิลคอยล์', 'ขดลวดดึง (Pull-in)', 'ขดลวดยึด (Hold-in)', 'ขดลวดอาร์เมเจอร์'], ans: 2 },
+        { q: 'อุปกรณ์ในข้อใดที่ "ไม่มี" ในมอเตอร์สตาร์ทแบบเฟืองทด (Reduction Type)?', opts: ['เฟืองขับ', 'พลันเจอร์', 'ก้ามปู (Shift Lever)', 'อาร์เมเจอร์'], ans: 2 },
+        { q: 'การใช้มัลติมิเตอร์วัดความต้านทานระหว่างซี่คอมมิวเตเตอร์ เป็นการตรวจเช็กสิ่งใด?', opts: ['การขาดของขดลวดอาร์เมเจอร์', 'การขาดของฟิลคอยล์', 'การลงกราวด์ของโครง', 'การสึกหรอของแปรงถ่าน'], ans: 0 },
+        { q: 'ชุดคลัตช์มอเตอร์สตาร์ทที่เป็นแบบ One-Way Clutch มีชื่อเรียกว่าอะไร?', opts: ['คลัตช์แบบแผ่น', 'คลัตช์แบบโอเวอร์รันนิ่ง (Overrunning Clutch)', 'คลัตช์เปียก', 'คลัตช์เบนดิกซ์'], ans: 1 },
+        { q: 'หากต้องการทดสอบว่า "ขดลวดยึด" ทำงานปกติหรือไม่ ต้องปลดสายใดออก?', opts: ['ถอดสายบวกออกจากขั้ว 50', 'ถอดสายลบออกจากขั้ว C', 'ถอดสายดินออกจากโครง', 'ถอดสายแบตเตอรี่ทั้งหมด'], ans: 1 },
+        { q: 'เครื่องมือที่ใช้สำหรับวัด "ความบิดเบี้ยวของคอมมิวเตเตอร์" คือเครื่องมือใด?', opts: ['เวอร์เนียร์คาลิปเปอร์', 'ไดอัลเกจ (Dial Indicator)', 'ฟิลเลอร์เกจ', 'ไมโครมิเตอร์'], ans: 1 },
+        { q: 'ทดสอบมอเตอร์สตาร์ทตัวเปล่า โซลินอยด์ทำงานดันเฟืองออกแต่มอเตอร์ไม่หมุน ควรตรวจสิ่งใดก่อน?', opts: ['ขดลวดยึด', 'ขดลวดดึง', 'สะพานไฟ (Contact Plate) ในโซลินอยด์', 'เฟืองสะพาน'], ans: 2 },
+        { q: 'ขั้ว ST ของสวิตช์จุดระเบิด ต่อเข้ากับขั้วใดของมอเตอร์สตาร์ท?', opts: ['ขั้ว 30 (+B)', 'ขั้ว 50 (S)', 'ขั้ว C', 'ขั้ว M'], ans: 1 },
+        { q: 'รถยนต์หรือแทรกเตอร์เกียร์ธรรมดา ติดตั้งสวิตช์ป้องกันการสตาร์ทไว้ที่จุดใด?', opts: ['แป้นเบรกเท้า', 'เบรกมือ', 'แป้นคลัตช์ / คันเกียร์ว่าง', 'คันเร่ง'], ans: 2 },
+        { q: 'ระยะเวลาในการทดสอบการทำงานของมอเตอร์สตาร์ทตัวเปล่า ไม่ควรเกินกี่วินาที?', opts: ['1-3 วินาที', '3-5 วินาที', '7-10 วินาที', '15-20 วินาที'], ans: 1 }
+      ]
+    };
+
+    function switchExamCategory(cat) {
+      currentExamCat = cat;
+      currentQIdx = 0;
+      examScore = 0;
+      document.getElementById('btn-cat-wire').className = cat === 'wire' ? 'px-3 py-1.5 rounded-lg text-xs font-bold bg-kubota text-white' : 'px-3 py-1.5 rounded-lg text-xs font-bold bg-gray-100 text-gray-700 hover:bg-gray-200';
+      document.getElementById('btn-cat-symbol').className = cat === 'symbol' ? 'px-3 py-1.5 rounded-lg text-xs font-bold bg-kubota text-white' : 'px-3 py-1.5 rounded-lg text-xs font-bold bg-gray-100 text-gray-700 hover:bg-gray-200';
+      document.getElementById('btn-cat-starter').className = cat === 'starter' ? 'px-3 py-1.5 rounded-lg text-xs font-bold bg-kubota text-white' : 'px-3 py-1.5 rounded-lg text-xs font-bold bg-gray-100 text-gray-700 hover:bg-gray-200';
+      document.getElementById('btn-quiz-next').classList.remove('hidden');
+      renderExamQuestion();
+    }
+
+    function renderExamQuestion() {
+      const qBox = document.getElementById('quiz-box');
       const prog = document.getElementById('quiz-progress');
-      const item = wireQuizzes[currentQuizIndex];
+      const list = examQuestions[currentExamCat];
+      const item = list[currentQIdx];
 
-      prog.innerText = `ข้อที่ ${currentQuizIndex + 1} / ${wireQuizzes.length}`;
+      prog.innerText = `ข้อที่ ${currentQIdx + 1} / ${list.length}`;
       qBox.innerHTML = `
-        <h4 class="font-bold text-gray-800 text-base">${item.q}</h4>
+        <h4 class="font-bold text-gray-900 text-sm leading-relaxed">${item.q}</h4>
         <div class="space-y-2 mt-3">
-          ${item.options.map((opt, i) => `
-            <label class="flex items-center p-2.5 bg-white border rounded-lg cursor-pointer hover:bg-orange-50/50">
-              <input type="radio" name="quiz_opt" value="${i}" class="text-[#F37021] focus:ring-[#F37021] mr-3">
-              <span class="text-sm font-medium text-gray-700">${opt}</span>
+          ${item.opts.map((opt, i) => `
+            <label class="flex items-center p-3 bg-white border border-orange-100 rounded-xl cursor-pointer hover:bg-orange-100/50 transition">
+              <input type="radio" name="exam_choice" value="${i}" class="text-kubota focus:ring-kubota mr-3">
+              <span class="text-xs font-medium text-gray-800">${opt}</span>
             </label>
           `).join('')}
         </div>
@@ -565,72 +917,224 @@
     }
 
     function submitExamAnswer() {
-      const selected = document.querySelector('input[name="quiz_opt"]:checked');
+      const selected = document.querySelector('input[name="exam_choice"]:checked');
       if (!selected) {
         alert('กรุณาเลือกคำตอบ');
         return;
       }
-      if (parseInt(selected.value) === wireQuizzes[currentQuizIndex].ans) {
-        quizScore++;
+      const list = examQuestions[currentExamCat];
+      if (parseInt(selected.value) === list[currentQIdx].ans) {
+        examScore++;
       }
-      currentQuizIndex++;
-      if (currentQuizIndex < wireQuizzes.length) {
-        renderQuizQuestion();
+      currentQIdx++;
+      if (currentQIdx < list.length) {
+        renderExamQuestion();
       } else {
-        document.getElementById('quiz-question-box').innerHTML = `
+        document.getElementById('quiz-box').innerHTML = `
           <div class="text-center py-6">
-            <i class="fa-solid fa-trophy text-4xl text-yellow-500 mb-2"></i>
-            <h3 class="text-lg font-bold text-gray-800">จบการทดสอบ!</h3>
-            <p class="text-sm text-gray-600 mt-1">คะแนนที่ได้: ${quizScore} / ${wireQuizzes.length}</p>
+            <i class="fa-solid fa-medal text-5xl text-yellow-500 mb-2"></i>
+            <h3 class="text-lg font-bold text-gray-900">จบการทดสอบ!</h3>
+            <p class="text-sm text-gray-600 mt-1">คุณได้คะแนน ${examScore} จาก ${list.length} คะแนน</p>
+            <p class="text-xs text-gray-500 mt-1">ประเมินผล: ${examScore >= (list.length * 0.7) ? '<span class="text-emerald-600 font-bold">ผ่านเกณฑ์มาตรฐาน CSD</span>' : '<span class="text-red-600 font-bold">ควรทบทวนเนื้อหาเพิ่มเติม</span>'}</p>
+            <button onclick="switchExamCategory('${currentExamCat}')" class="mt-4 bg-kubota text-white px-5 py-2 rounded-lg text-xs font-bold shadow">ทำใหม่อีกครั้ง</button>
           </div>
         `;
         document.getElementById('btn-quiz-next').classList.add('hidden');
       }
     }
 
-    // ===== CHECKLIST TABLE =====
-    const checklistData = {
+    // ===== 6. FULL 6-MODEL CHECKLIST TABLE (EXACT EXCEL REPLICA) =====
+    const fullChecklistData = {
       L5228: [
-        { name: 'แบตเตอรี่', pin: 'ขั้ว (+)', exp: ['~12.6V', '~12.4V', '>9.6V'] },
-        { name: 'มอเตอร์สตาร์ท', pin: 'ขั้ว S', exp: ['0V', '0V', '12V'] },
-        { name: 'ไดชาร์จ', pin: 'ขั้ว +B', exp: ['~12.6V', '~12.4V', '>14V'] },
-        { name: 'ไดชาร์จ', pin: 'ขั้ว IG', exp: ['0V', '~12V', '~12V'] },
-        { name: 'โซลินอยด์ดับเครื่อง', pin: 'ขั้ว P (ขดดึง)', exp: ['0V', '0V', '12V'] },
-        { name: 'โซลินอยด์ดับเครื่อง', pin: 'ขั้ว H (ขดแช่)', exp: ['0V', '12V', '12V'] }
+        { id: 1, name: 'แบตเตอรี่', pin: 'ขั้ว +', off: '~12.6V', on: '~12.4V', st: '>9.6V' },
+        { id: '', name: 'แบตเตอรี่', pin: 'ขั้ว -', off: '0V', on: '0V', st: '0V' },
+        { id: 2, name: 'มอเตอร์สตาร์ท', pin: 'ขั้ว S', off: '0V', on: '0V', st: '12V' },
+        { id: '', name: 'มอเตอร์สตาร์ท', pin: 'ขั้ว +B', off: '~12.6V', on: '~12.4V', st: '>9.6V' },
+        { id: 3, name: 'ไดชาร์จ', pin: 'ขั้ว +B', off: '~12.6V', on: '~12.4V', st: '>14V' },
+        { id: '', name: 'ไดชาร์จ', pin: 'ขั้ว IG', off: '0V', on: '12V', st: '12V' },
+        { id: '', name: 'ไดชาร์จ', pin: 'ขั้ว WL', off: '0V', on: '0V', st: '12V' },
+        { id: '', name: 'ไดชาร์จ', pin: 'ขั้ว W', off: '0V', on: '0V', st: 'AC Pulse' },
+        { id: 4, name: 'รีเลย์สตาร์ท', pin: 'IN --> OUT (ขดลวด)', off: '0V', on: '0V', st: '12V' },
+        { id: '', name: 'รีเลย์สตาร์ท', pin: 'IN --> OUT (หน้าสัมผัส)', off: '12V', on: '12V', st: '12V' },
+        { id: 5, name: 'ฟิวส์ SB fuse 40 A', pin: 'IN --> OUT', off: '12V', on: '12V', st: '12V' },
+        { id: 6, name: 'ฟิวส์ SB fuse 30 A', pin: 'IN --> OUT', off: '12V', on: '12V', st: '12V' },
+        { id: 7, name: 'สวิตช์กุญแจ', pin: 'ขั้ว B - ขั้ว Ground', off: '0V', on: '0V', st: '0V' },
+        { id: '', name: 'สวิตช์กุญแจ', pin: 'ขั้ว B - ขั้ว M (ON)', off: '0V', on: '12V', st: '12V' },
+        { id: '', name: 'สวิตช์กุญแจ', pin: 'ขั้ว B - ขั้ว ST', off: '0V', on: '0V', st: '12V' },
+        { id: 8, name: 'รีเลย์โซลินอยด์ดับเครื่อง', pin: 'IN --> OUT (ขดลวด)', off: '0V', on: '12V', st: '12V' },
+        { id: '', name: 'รีเลย์โซลินอยด์ดับเครื่อง', pin: 'IN --> OUT (หน้าสัมผัส)', off: '12V', on: '12V', st: '12V' },
+        { id: 9, name: 'ฟิวส์ 5A โซลินอยด์ดับเครื่อง', pin: 'IN --> OUT', off: '12V', on: '12V', st: '12V' },
+        { id: 10, name: 'รีเลย์นิรภัยดับเครื่อง 1', pin: 'IN --> OUT (ขดลวด)', off: '0V', on: '12V', st: '12V' },
+        { id: '', name: 'รีเลย์นิรภัยดับเครื่อง 1', pin: 'IN --> OUT (หน้าสัมผัส)', off: '0V', on: '12V', st: '12V' },
+        { id: 11, name: 'รีเลย์นิรภัยดับเครื่อง 2', pin: 'IN --> OUT (ขดลวด)', off: '0V', on: '12V', st: '12V' },
+        { id: '', name: 'รีเลย์นิรภัยดับเครื่อง 2', pin: 'IN --> OUT (หน้าสัมผัส)', off: '0V', on: '12V', st: '12V' },
+        { id: 12, name: 'ไดโอดโซลินอยด์ดับเครื่อง', pin: 'IN --> OUT', off: '0V', on: '12V', st: '12V' },
+        { id: 13, name: 'สวิตช์แรงดันน้ำมันเครื่อง', pin: 'ขั้วสวิตช์', off: '0V (GND)', on: '0V (GND)', st: 'Open' },
+        { id: 14, name: 'โซลินอยด์ดับเครื่อง', pin: 'ขั้วสวิตช์ P (ขดดึง)', off: '0V', on: '0V', st: '12V' },
+        { id: '', name: 'โซลินอยด์ดับเครื่อง', pin: 'ขั้วสวิตช์ H (ขดแช่)', off: '0V', on: '12V', st: '12V' },
+        { id: 15, name: 'ฟิวส์ 5 A สตาร์ท', pin: 'IN --> OUT', off: '0V', on: '0V', st: '12V' },
+        { id: 16, name: 'สวิตช์ PTO', pin: 'IN --> OUT', off: '0V', on: '0V', st: '12V' },
+        { id: 17, name: 'สวิตช์นิรภัยคลัตช์', pin: 'IN --> OUT', off: '0V', on: '0V', st: '12V' }
+      ],
+      M9808: [
+        { id: 1, name: 'แบตเตอรี่', pin: 'ขั้ว +', off: '~12.6V', on: '~12.4V', st: '>9.6V' },
+        { id: '', name: 'แบตเตอรี่', pin: 'ขั้ว -', off: '0V', on: '0V', st: '0V' },
+        { id: 2, name: 'มอเตอร์สตาร์ท', pin: 'ขั้ว S', off: '0V', on: '0V', st: '12V' },
+        { id: '', name: 'มอเตอร์สตาร์ท', pin: 'ขั้ว +B', off: '~12.6V', on: '~12.4V', st: '>9.6V' },
+        { id: 3, name: 'ฟิวส์ SB fuse 50 A (1)', pin: 'IN --> OUT', off: '12V', on: '12V', st: '12V' },
+        { id: '', name: 'ฟิวส์ SB fuse 50 A (2)', pin: 'IN --> OUT', off: '12V', on: '12V', st: '12V' },
+        { id: '', name: 'ฟิวส์ SB fuse 40 A', pin: 'IN --> OUT', off: '12V', on: '12V', st: '12V' },
+        { id: '', name: 'ฟิวส์ SB fuse 50 A (3)', pin: 'IN --> OUT', off: '12V', on: '12V', st: '12V' },
+        { id: 4, name: 'ไดชาร์จ', pin: 'ขั้ว +B', off: '~12.6V', on: '~12.4V', st: '>14V' },
+        { id: '', name: 'ไดชาร์จ', pin: 'ขั้ว IG', off: '0V', on: '12V', st: '12V' },
+        { id: '', name: 'ไดชาร์จ', pin: 'ขั้ว WL', off: '0V', on: '0V', st: '12V' },
+        { id: 5, name: 'ฟิวส์ 5A สวิตช์กุญแจ', pin: 'IN --> OUT', off: '12V', on: '12V', st: '12V' },
+        { id: 6, name: 'สวิตช์กุญแจ', pin: 'ขั้ว B - ขั้ว Ground', off: '0V', on: '0V', st: '0V' },
+        { id: '', name: 'สวิตช์กุญแจ', pin: 'ขั้ว B - ขั้ว M (ON)', off: '0V', on: '12V', st: '12V' },
+        { id: '', name: 'สวิตช์กุญแจ', pin: 'ขั้ว B - ขั้ว ST', off: '0V', on: '0V', st: '12V' },
+        { id: 7, name: 'รีเลย์สตาร์ท', pin: 'IN --> OUT (ขดลวด)', off: '0V', on: '0V', st: '12V' },
+        { id: '', name: 'รีเลย์สตาร์ท', pin: 'IN --> OUT (หน้าสัมผัส)', off: '12V', on: '12V', st: '12V' },
+        { id: 8, name: 'รีเลย์โซลินอยด์กุญแจดับ', pin: 'IN --> OUT (ขดลวด)', off: '0V', on: '12V', st: '12V' },
+        { id: 9, name: 'ฟิวส์ 5 A PTO/ไดชาร์จ', pin: 'IN --> OUT', off: '0V', on: '12V', st: '12V' },
+        { id: 10, name: 'ฟิวส์ 5 A โซลินอยด์ดับเครื่อง', pin: 'IN --> OUT', off: '12V', on: '12V', st: '12V' },
+        { id: 11, name: 'รีเลย์ดับเครื่องยนต์', pin: 'IN --> OUT (ขดลวด)', off: '0V', on: '12V', st: '12V' },
+        { id: 12, name: 'สวิตช์ PTO', pin: 'IN --> OUT', off: '0V', on: '0V', st: '12V' },
+        { id: 13, name: 'รีเลย์ PTO', pin: 'IN --> OUT', off: '0V', on: '12V', st: '12V' },
+        { id: 14, name: 'โซลินอยด์ดับเครื่อง', pin: 'ขั้วสวิตช์ P (ขดดึง)', off: '0V', on: '0V', st: '12V' },
+        { id: '', name: 'โซลินอยด์ดับเครื่อง', pin: 'ขั้วสวิตช์ H (ขดแช่)', off: '0V', on: '12V', st: '12V' },
+        { id: 15, name: 'ฟิวส์ 5 A มอเตอร์สตาร์ท', pin: 'IN --> OUT', off: '0V', on: '0V', st: '12V' },
+        { id: 16, name: 'สวิตช์เปลี่ยนทิศทาง', pin: 'IN --> OUT', off: '0V', on: '0V', st: '12V' }
+      ],
+      DC70: [
+        { id: 1, name: 'แบตเตอรี่', pin: 'ขั้ว +', off: '~12.6V', on: '~12.4V', st: '>9.6V' },
+        { id: '', name: 'แบตเตอรี่', pin: 'ขั้ว -', off: '0V', on: '0V', st: '0V' },
+        { id: 2, name: 'มอเตอร์สตาร์ท', pin: 'ขั้ว S', off: '0V', on: '0V', st: '12V' },
+        { id: '', name: 'มอเตอร์สตาร์ท', pin: 'ขั้ว +B', off: '~12.6V', on: '~12.4V', st: '>9.6V' },
+        { id: 3, name: 'ไดชาร์จ', pin: 'ขั้ว +B', off: '~12.6V', on: '~12.4V', st: '>14V' },
+        { id: '', name: 'ไดชาร์จ', pin: 'ขั้ว IG', off: '0V', on: '12V', st: '12V' },
+        { id: '', name: 'ไดชาร์จ', pin: 'ขั้ว WL', off: '0V', on: '0V', st: '12V' },
+        { id: 4, name: 'รีเลย์สตาร์ท', pin: 'IN --> OUT (ขดลวด)', off: '0V', on: '0V', st: '12V' },
+        { id: 5, name: 'ฟิวส์ SB fuse 40 A', pin: 'IN --> OUT', off: '12V', on: '12V', st: '12V' },
+        { id: 6, name: 'ฟิวส์ SB fuse 30 A', pin: 'IN --> OUT', off: '12V', on: '12V', st: '12V' },
+        { id: 7, name: 'สวิตช์กุญแจ', pin: 'ขั้ว B - ขั้ว ST', off: '0V', on: '0V', st: '12V' },
+        { id: 8, name: 'รีเลย์โซลินอยด์ดับเครื่อง', pin: 'IN --> OUT', off: '0V', on: '12V', st: '12V' },
+        { id: 9, name: 'สวิตช์คลัตช์ปล่อยข้าว', pin: 'IN --> OUT', off: '0V', on: '0V', st: '12V' },
+        { id: 10, name: 'สวิตช์คลัตช์ตู้นวด', pin: 'IN --> OUT', off: '0V', on: '0V', st: '12V' },
+        { id: 11, name: 'สวิตช์คันเกียร์หลัก', pin: 'IN --> OUT', off: '0V', on: '0V', st: '12V' },
+        { id: 12, name: 'โซลินอยด์ดับเครื่อง', pin: 'ขั้วสวิตช์ P (ขดดึง)', off: '0V', on: '0V', st: '12V' },
+        { id: '', name: 'โซลินอยด์ดับเครื่อง', pin: 'ขั้วสวิตช์ H (ขดแช่)', off: '0V', on: '12V', st: '12V' }
+      ],
+      KA8: [
+        { id: 1, name: 'แบตเตอรี่', pin: 'ขั้ว +', off: '~12.6V', on: '~12.4V', st: '>9.6V' },
+        { id: '', name: 'แบตเตอรี่', pin: 'ขั้ว -', off: '0V', on: '0V', st: '0V' },
+        { id: 2, name: 'มอเตอร์สตาร์ท', pin: 'ขั้ว S', off: '0V', on: '0V', st: '12V' },
+        { id: '', name: 'มอเตอร์สตาร์ท', pin: 'ขั้ว +B', off: '~12.6V', on: '~12.4V', st: '>9.6V' },
+        { id: 3, name: 'ไดชาร์จ Alternator', pin: 'ขั้ว +B', off: '~12.6V', on: '~12.4V', st: '>14V' },
+        { id: '', name: 'ไดชาร์จ Alternator', pin: 'ขั้ว IG', off: '0V', on: '12V', st: '12V' },
+        { id: 4, name: 'รีเลย์สตาร์ท', pin: 'IN --> OUT (ขดลวด)', off: '0V', on: '0V', st: '12V' },
+        { id: 5, name: 'ฟิวส์หลัก SB fuse 40 A', pin: 'IN --> OUT', off: '12V', on: '12V', st: '12V' },
+        { id: 6, name: 'สวิตช์นิรภัย Safety Switch', pin: 'IN --> OUT', off: '0V', on: '0V', st: '12V' },
+        { id: 7, name: 'สวิตช์หยุดฉุกเฉิน E-stop', pin: 'ขั้วสวิตช์', off: '0V', on: '12V', st: '12V' },
+        { id: 8, name: 'มอเตอร์คลัตช์ปักดำ', pin: 'ขั้วสัญญาณไดรเวอร์', off: '0V', on: '12V', st: '12V' },
+        { id: 9, name: 'โซลินอยด์ดับเครื่อง', pin: 'ขั้วสวิตช์ P (ขดดึง)', off: '0V', on: '0V', st: '12V' },
+        { id: '', name: 'โซลินอยด์ดับเครื่อง', pin: 'ขั้วสวิตช์ H (ขดแช่)', off: '0V', on: '12V', st: '12V' }
+      ],
+      KX033: [
+        { id: 1, name: 'แบตเตอรี่', pin: 'ขั้ว +', off: '~12.6V', on: '~12.4V', st: '>9.6V' },
+        { id: '', name: 'แบตเตอรี่', pin: 'ขั้ว -', off: '0V', on: '0V', st: '0V' },
+        { id: 2, name: 'มอเตอร์สตาร์ท', pin: 'ขั้ว S', off: '0V', on: '0V', st: '12V' },
+        { id: '', name: 'มอเตอร์สตาร์ท', pin: 'ขั้ว +B', off: '~12.6V', on: '~12.4V', st: '>9.6V' },
+        { id: 3, name: 'ฟิวส์ SB fuse 80 A', pin: 'IN --> OUT', off: '12V', on: '12V', st: '12V' },
+        { id: '', name: 'ฟิวส์ SB fuse 50 A', pin: 'IN --> OUT', off: '12V', on: '12V', st: '12V' },
+        { id: 4, name: 'ไดชาร์จ', pin: 'ขั้ว +B', off: '~12.6V', on: '~12.4V', st: '>14V' },
+        { id: '', name: 'ไดชาร์จ', pin: 'ขั้ว IG', off: '0V', on: '12V', st: '12V' },
+        { id: '', name: 'ไดชาร์จ', pin: 'ขั้ว L', off: '0V', on: '0V', st: '12V' },
+        { id: 5, name: 'สวิตช์กุญแจ', pin: 'ขั้ว B (3) - ขั้ว Ground', off: '0V', on: '0V', st: '0V' },
+        { id: '', name: 'สวิตช์กุญแจ', pin: 'ขั้ว B (3) - ขั้ว M (1)', off: '0V', on: '12V', st: '12V' },
+        { id: '', name: 'สวิตช์กุญแจ', pin: 'ขั้ว B (3) - ขั้ว ST (2)', off: '0V', on: '0V', st: '12V' },
+        { id: 6, name: 'ฟิวส์ 5 A (อีซียูหลัก +B)', pin: 'IN --> OUT', off: '12V', on: '12V', st: '12V' },
+        { id: 7, name: 'ฟิวส์ 5 A (โซลินอยด์ดับเครื่อง)', pin: 'IN --> OUT', off: '12V', on: '12V', st: '12V' },
+        { id: 8, name: 'รีเลย์ (ดับเครื่องยนต์)', pin: 'IN --> OUT (ขดลวด)', off: '0V', on: '12V', st: '12V' },
+        { id: 9, name: 'รีเลย์ (หัวเผา)', pin: 'IN --> OUT (ขดลวด)', off: '0V', on: '12V', st: '0V' },
+        { id: 10, name: 'ฟิวส์ 5 A (อีซียูหลัก AC)', pin: 'IN --> OUT', off: '0V', on: '12V', st: '12V' },
+        { id: 11, name: 'ฟิวส์ 5 A สวิตช์ล็อกคันโยก', pin: 'IN --> OUT', off: '0V', on: '12V', st: '12V' },
+        { id: 12, name: 'สวิตช์ล็อกคันโยก', pin: 'IN --> OUT', off: '0V', on: '12V', st: '12V' },
+        { id: 13, name: 'หัวเผา Glow Plug', pin: 'ขั้วสวิตช์', off: '0V', on: '12V', st: '0V' },
+        { id: 14, name: 'สวิตช์ดับเครื่องยนต์', pin: 'IN --> OUT', off: '0V', on: '12V', st: '12V' },
+        { id: 15, name: 'โซลินอยด์ดับเครื่อง', pin: 'ขั้วสวิตช์ P (ขดดึง)', off: '0V', on: '0V', st: '12V' },
+        { id: '', name: 'โซลินอยด์ดับเครื่อง', pin: 'ขั้วสวิตช์ H (ขดแช่)', off: '0V', on: '12V', st: '12V' },
+        { id: 16, name: 'รีเลย์ (มอเตอร์สตาร์ท)', pin: 'IN --> OUT (ขดลวด)', off: '0V', on: '0V', st: '12V' }
       ],
       U55: [
-        { name: 'แบตเตอรี่', pin: 'ขั้ว +B', exp: ['~12.6V', '~12.4V', '>9.6V'] },
-        { name: 'สวิตช์กุญแจ (CN14)', pin: 'ขั้ว ST (2)', exp: ['0V', '0V', '12V'] },
-        { name: 'สวิตช์ล็อกคันโยก (CN11)', pin: 'IN -> OUT', exp: ['0V', '12V', '12V'] },
-        { name: 'หัวเผา Glow Plug', pin: 'ขั้วสวิตช์', exp: ['0V', '12V', '0V'] }
+        { id: 1, name: 'แบตเตอรี่', pin: 'ขั้ว +', off: '~12.6V', on: '~12.4V', st: '>9.6V' },
+        { id: '', name: 'แบตเตอรี่', pin: 'ขั้ว -', off: '0V', on: '0V', st: '0V' },
+        { id: 2, name: 'ฟิวส์ SB fuse 80 A', pin: 'IN --> OUT', off: '12V', on: '12V', st: '12V' },
+        { id: '', name: 'ฟิวส์ SB fuse 50 A (1)', pin: 'IN --> OUT', off: '12V', on: '12V', st: '12V' },
+        { id: '', name: 'ฟิวส์ SB fuse 50 A (2)', pin: 'IN --> OUT', off: '12V', on: '12V', st: '12V' },
+        { id: 3, name: 'ไดชาร์จ Alternator(+B) - CN113', pin: 'ขั้ว +B', off: '~12.6V', on: '~12.4V', st: '>14V' },
+        { id: 4, name: 'รีเลย์ Glow Relay', pin: 'IN --> OUT (ขดลวด)', off: '0V', on: '12V', st: '0V' },
+        { id: 5, name: 'ฟิวส์ 30 A (Engine Stop Solenoid)', pin: 'IN --> OUT', off: '12V', on: '12V', st: '12V' },
+        { id: 6, name: 'สวิตช์กุญแจ Key Switch - CN14', pin: 'ขั้ว B (3) - ขั้ว Ground', off: '0V', on: '0V', st: '0V' },
+        { id: '', name: 'สวิตช์กุญแจ Key Switch - CN14', pin: 'ขั้ว B (3) - ขั้ว M (1)', off: '0V', on: '12V', st: '12V' },
+        { id: '', name: 'สวิตช์กุญแจ Key Switch - CN14', pin: 'ขั้ว B (3) - ขั้ว ST (2)', off: '0V', on: '0V', st: '12V' },
+        { id: 7, name: 'ฟิวส์ 5 A Meter (+B)', pin: 'IN --> OUT', off: '12V', on: '12V', st: '12V' },
+        { id: '', name: 'ฟิวส์ 5 A ECU(Main) +B', pin: 'IN --> OUT', off: '12V', on: '12V', st: '12V' },
+        { id: 8, name: 'LCD Meter - CN2', pin: 'ขั้ว 7 (Direct B)', off: '12V', on: '12V', st: '12V' },
+        { id: '', name: 'LCD Meter - CN2', pin: 'ขั้ว 8 (AC Key)', off: '0V', on: '12V', st: '12V' },
+        { id: '', name: 'LCD Meter - CN2', pin: 'ขั้ว 14 (Ground)', off: '0V', on: '0V', st: '0V' },
+        { id: 9, name: 'รีเลย์ Engine Stop Solenoid (CN445)', pin: 'IN --> OUT (ขดลวด)', off: '0V', on: '12V', st: '12V' },
+        { id: '', name: 'รีเลย์ Engine Stop Solenoid (CN445)', pin: 'IN --> OUT (หน้าสัมผัส)', off: '12V', on: '12V', st: '12V' },
+        { id: 10, name: 'ฟิวส์ 5 A Meter AC', pin: 'IN --> OUT', off: '0V', on: '12V', st: '12V' },
+        { id: '', name: 'ฟิวส์ 5 A Lever Lock', pin: 'IN --> OUT', off: '0V', on: '12V', st: '12V' },
+        { id: '', name: 'ฟิวส์ 5 A ECU(Main) AC', pin: 'IN --> OUT', off: '0V', on: '12V', st: '12V' },
+        { id: '', name: 'ฟิวส์ 5 A Fuel Pump', pin: 'IN --> OUT', off: '0V', on: '12V', st: '12V' },
+        { id: 11, name: 'สวิตช์ Lever Lock SW (L) - CN11', pin: 'IN --> OUT', off: '0V', on: '12V', st: '12V' },
+        { id: 12, name: 'สวิตช์ Fuel Pump - CN24', pin: 'IN --> OUT', off: '0V', on: '12V', st: '12V' },
+        { id: 13, name: 'รีเลย์ Auto Release Relay - CN34', pin: 'IN --> OUT (ขดลวด)', off: '0V', on: '12V', st: '12V' },
+        { id: 14, name: 'หัวเผา Glow Plug - CN115', pin: 'ขั้วสวิตช์', off: '0V', on: '12V', st: '0V' },
+        { id: 15, name: 'Engine Stop Solenoid - CN36', pin: 'ขั้วสวิตช์ P (ขดดึง)', off: '0V', on: '0V', st: '12V' },
+        { id: '', name: 'Engine Stop Solenoid - CN36', pin: 'ขั้วสวิตช์ H (ขดแช่)', off: '0V', on: '12V', st: '12V' },
+        { id: 16, name: 'มอเตอร์สตาร์ท', pin: 'ขั้ว S', off: '0V', on: '0V', st: '12V' },
+        { id: '', name: 'มอเตอร์สตาร์ท', pin: 'ขั้ว +B', off: '~12.6V', on: '~12.4V', st: '>9.6V' }
       ]
     };
 
     function renderChecklistTable() {
       const model = document.getElementById('model-select').value;
       const tbody = document.getElementById('checklist-tbody');
-      const rows = checklistData[model] || checklistData['L5228'];
+      const rows = fullChecklistData[model] || fullChecklistData['L5228'];
 
       tbody.innerHTML = rows.map((r, i) => `
-        <tr class="hover:bg-gray-50">
-          <td class="border border-gray-300 px-3 py-2 text-center font-bold text-gray-500">${i + 1}</td>
-          <td class="border border-gray-300 px-3 py-2 font-medium text-gray-800">${r.name}</td>
-          <td class="border border-gray-300 px-3 py-2 text-gray-600 font-mono text-xs">${r.pin}</td>
-          <td class="border border-gray-300 px-2 py-1 text-center"><input type="text" placeholder="${r.exp[0]}" class="border rounded px-2 py-1 text-xs w-full text-center outline-none"></td>
-          <td class="border border-gray-300 px-2 py-1 text-center"><input type="text" placeholder="${r.exp[1]}" class="border rounded px-2 py-1 text-xs w-full text-center outline-none"></td>
-          <td class="border border-gray-300 px-2 py-1 text-center"><input type="text" placeholder="${r.exp[2]}" class="border rounded px-2 py-1 text-xs w-full text-center outline-none"></td>
+        <tr class="hover:bg-orange-50/40 transition">
+          <td class="border border-gray-300 px-3 py-1.5 text-center font-bold text-gray-500">${r.id}</td>
+          <td class="border border-gray-300 px-3 py-1.5 font-semibold text-gray-900">${r.name}</td>
+          <td class="border border-gray-300 px-3 py-1.5 text-gray-600 font-mono text-[11px]">${r.pin}</td>
+          <td class="border border-gray-300 px-2 py-1 text-center">
+            <input type="text" placeholder="${r.off}" class="border rounded px-2 py-1 text-xs w-full text-center outline-none focus:border-kubota focus:bg-orange-50/30">
+          </td>
+          <td class="border border-gray-300 px-2 py-1 text-center">
+            <input type="text" placeholder="${r.on}" class="border rounded px-2 py-1 text-xs w-full text-center outline-none focus:border-kubota focus:bg-orange-50/30">
+          </td>
+          <td class="border border-gray-300 px-2 py-1 text-center">
+            <input type="text" placeholder="${r.st}" class="border rounded px-2 py-1 text-xs w-full text-center outline-none focus:border-kubota focus:bg-orange-50/30">
+          </td>
+          <td class="border border-gray-300 px-2 py-1 text-center no-print">
+            <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">
+              <i class="fa-solid fa-check mr-0.5"></i> ปกติ
+            </span>
+          </td>
         </tr>
       `).join('');
     }
 
-    // Initialization
+    // ===== APP INITIALIZATION =====
     window.onload = () => {
-      if (sessionStorage.getItem("kubota_auth") === "true") {
+      if (sessionStorage.getItem("kubota_auth_pro") === "true") {
         document.getElementById("auth-lock").classList.add("hidden");
       }
       selectCluster('excavator5');
       loadVoltageCircuit(1);
-      renderQuizQuestion();
+      switchExamCategory('wire');
       renderChecklistTable();
     };
   </script>
